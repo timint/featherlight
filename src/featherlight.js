@@ -262,6 +262,8 @@
 			self.$instance.hide().appendTo(self.root);
 			if((!event || !event.isDefaultPrevented())
 				&& self.beforeOpen(event) !== false) {
+          
+				$('body').addClass('featherlight-open');
 
 				if(event){
 					event.preventDefault();
@@ -310,6 +312,8 @@
 					self.afterClose(event);
 					deferred.resolve();
 				});
+
+				$('body').removeClass('featherlight-open');
 			}
 			return deferred.promise();
 		},

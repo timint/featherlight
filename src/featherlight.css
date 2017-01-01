@@ -6,6 +6,17 @@
  * MIT Licensed.
 **/
 @media all {
+	
+  body.featherlight-open {
+    /* prevent scrolling */
+    overflow: hidden;
+  }
+  
+  body.featherlight-open > *:not(.featherlight) {
+    /* backdrop blur */
+    filter: blur(3px);
+  }
+  
 	.featherlight {
 		display: none;
 
