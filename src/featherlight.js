@@ -154,9 +154,9 @@
 				$background = $(self.background || [
 					'<div class="'+css+'-loading '+css+'">',
 						'<div class="'+css+'-content">',
-							'<button class="'+css+'-close-icon '+ self.namespace + '-close" aria-label="Close">',
-								self.closeIcon,
-							'</button>',
+							self.closeIcon ? '<button class="'+css+'-close-icon '+ self.namespace + '-close" aria-label="Close">' : null,
+								self.closeIcon ? self.closeIcon : null,
+							self.closeIcon ? '</button>' : null,
 							'<div class="'+self.namespace+'-inner">' + self.loading + '</div>',
 						'</div>',
 					'</div>'].join('')),
