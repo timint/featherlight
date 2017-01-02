@@ -130,6 +130,21 @@
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
+  
+  /* stacked modals */
+  .featherlight {
+    perspective: 2048px;
+  }
+  .featherlight .featherlight-content {
+    transition: all 0.25s linear;
+    transform: -400px;
+    transform: scale(0.8) rotateY(45deg) translateZ(-400px);
+    transform-style: preserve-3d;
+  }
+  .featherlight:last-of-type .featherlight-content {
+    transform: initial !important;
+    transform-style: initial !important;
+  }
 }
 
 /* handling phones and small screens */
