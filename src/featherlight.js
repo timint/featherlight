@@ -404,10 +404,10 @@
 		functionAttributes: ['beforeOpen', 'afterOpen', 'beforeContent', 'afterContent', 'beforeClose', 'afterClose'],
 
 		/*** class methods ***/
-		/* read element's attributes starting with data-featherlight- */
+		/* read element's attributes starting with data- */
 		readElementConfig: function(element, namespace) {
 			var Klass = this,
-				regexp = new RegExp('^data-' + namespace + '-(.*)'),
+				regexp = new RegExp('^data-(.*)'),
 				config = {};
 			if (element && element.attributes) {
 				$.each(element.attributes, function(){
