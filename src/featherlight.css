@@ -24,6 +24,7 @@
 		position:fixed;
 		top: 0; right: 0; bottom: 0; left: 0;
 		z-index: 2147483647; /* z-index needs to be >= elements on the site. */
+		overflow-y: auto;
 
 		/* position: centering content */
 		text-align: center;
@@ -40,7 +41,7 @@
 
 	/* support for nested featherlights. Does not work in IE8 (use JS to fix) */
 	.featherlight:last-of-type {
-		background: rgba(0, 0, 0, 0.8);
+		background: rgba(0, 0, 0, 0.5);
 	}
 
 	.featherlight:before {
@@ -61,18 +62,16 @@
 		display: inline-block;
 
 		/* dimensions: cut off images */
-		overflow: auto;
-		padding: 25px 25px 0;
-		border-bottom: 25px solid transparent;
+		padding: 15px;
+		border-radius: 0.25em;
 
 		/* dimensions: handling large content */
-		margin-left: 5%;
-		margin-right: 5%;
-		max-height: 95%;
+		margin: 30px;
 
 		/* styling */
 		background: #fff;
 		cursor: auto;
+		box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 
 		/* reset white-space wrapping */
 		white-space: normal;
@@ -111,10 +110,7 @@
 		width: 100%;
 	}
 
-
 	.featherlight-iframe .featherlight-content {
-		/* removed the border for image croping since iframe is edge to edge */
-		border-bottom: 0;
 		padding: 0;
 		-webkit-overflow-scrolling: touch;
 		overflow-y: scroll;
@@ -151,11 +147,7 @@
 @media only screen and (max-width: 1024px) {
 	.featherlight .featherlight-content {
 		/* dimensions: maximize lightbox with for small screens */
-		margin-left: 0;
-		margin-right: 0;
-		max-height: 98%;
-
-		padding: 10px 10px 0;
-		border-bottom: 10px solid transparent;
+		margin: 10px;
+		padding: 10px;
 	}
 }
