@@ -369,15 +369,15 @@ You will need to use an extension (featherlight.gallery.js).  Since Featherlight
 
 Simply include the extension CSS and JavaScript Files after the regular featherlight files like this:
 
-	<link href="//cdn.rawgit.com/noelboss/featherlight/1.3.4/release/featherlight.min.css" type="text/css" rel="stylesheet" />
-	<link href="//cdn.rawgit.com/noelboss/featherlight/1.3.4/release/featherlight.gallery.min.css" type="text/css" rel="stylesheet" />
+	<link href="//cdn.rawgit.com/noelboss/featherlight/1.7.0/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+	<link href="//cdn.rawgit.com/noelboss/featherlight/1.7.0/release/featherlight.gallery.min.css" type="text/css" rel="stylesheet" />
 
 Add the JavaScript at the bottom of the body:
 
 ```html
 	<script src="//code.jquery.com/jquery-latest.js"></script>
-	<script src="//cdn.rawgit.com/noelboss/featherlight/1.3.4/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="//cdn.rawgit.com/noelboss/featherlight/1.3.4/release/featherlight.gallery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="//cdn.rawgit.com/noelboss/featherlight/1.7.0/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="//cdn.rawgit.com/noelboss/featherlight/1.7.0/release/featherlight.gallery.min.js" type="text/javascript" charset="utf-8"></script>
 ```
 
 Check out the example here: [Gallery with Featherlight](gallery.html)
