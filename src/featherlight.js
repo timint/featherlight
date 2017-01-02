@@ -250,7 +250,7 @@
 				.slice(1).remove().end()      /* In the unexpected event where there are many inner elements, remove all but the first one */
 				.replaceWith($.contains(self.$instance[0], $content[0]) ? '' : $content);
 
-			self.$content = $content.addClass(self.namespace+'-inner');
+			self.$content = $content;
 
 			return self;
 		},

@@ -78,12 +78,6 @@
 		white-space: normal;
 	}
 
-	/* contains the content */
-	.featherlight .featherlight-inner {
-		/* make sure its visible */
-		display: block;
-	}
-
 	.featherlight .featherlight-close-icon {
 		/* position: centering vertical and horizontal */
 		position: absolute;
