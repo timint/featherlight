@@ -375,7 +375,7 @@
 
 		/*** class methods ***/
 		/* read element's attributes starting with data- */
-		readElementConfig: function(element, namespace) {
+		readElementConfig: function(element) {
 			var Klass = this,
 				regexp = new RegExp('^data-(.*)'),
 				config = {};
@@ -431,15 +431,15 @@
 
 			/* Only for openTrigger and namespace... */
 			var namespace = config.namespace || Klass.defaults.namespace,
-				tempConfig = $.extend({}, Klass.defaults, Klass.readElementConfig($source[0], namespace), config),
+				tempConfig = $.extend({}, Klass.defaults, Klass.readElementConfig($source[0]), config),
 				sharedPersist;
 
 			$source.on(tempConfig.openTrigger+'.'+tempConfig.namespace, tempConfig.filter, function(event) {
 				/* ... since we might as well compute the config on the actual target */
 				var elemConfig = $.extend(
 					{$source: $source, $currentTarget: $(this)},
-					Klass.readElementConfig($source[0], tempConfig.namespace),
-					Klass.readElementConfig(this, tempConfig.namespace),
+					Klass.readElementConfig($source[0]),
+					Klass.readElementConfig(this),
 					config);
 				var fl = sharedPersist || $(this).data('featherlight-persisted') || new Klass($content, elemConfig);
 				if(fl.persist === 'shared') {
