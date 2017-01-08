@@ -10,6 +10,7 @@
   body.featherlight-open {
     /* prevent scrolling */
     overflow: hidden;
+    padding-right: 15px;
   }
   
   body.featherlight-open > *:not(.featherlight) {
