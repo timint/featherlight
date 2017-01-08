@@ -14,13 +14,13 @@
   }
   
   body.featherlight-open > *:not(.featherlight) {
-    /* backdrop blur */
+    /* blur backdrop */
     filter: blur(3px);
   }
   
 	.featherlight {
 		display: none;
-
+    
 		/* dimensions: spanning the background from edge to edge */
 		position:fixed;
 		top: 0; right: 0; bottom: 0; left: 0;
@@ -38,6 +38,12 @@
 		background: #333;
 		/* IE8 "hack" for nested featherlights */
 		background: rgba(0, 0, 0, 0);
+	}
+  
+	.featherlight * { /* See https://github.com/noelboss/featherlight/issues/42 */
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
 	}
 
 	/* support for nested featherlights. Does not work in IE8 (use JS to fix) */
@@ -112,20 +118,15 @@
 	}
 
 	.featherlight-iframe .featherlight-content {
-		padding: 0;
 		-webkit-overflow-scrolling: touch;
-		overflow-y: scroll;
+		overflow-y: auto;
 	}
 
 	.featherlight iframe {
 		/* styling */
 		border: none;
-	}
-
-	.featherlight * { /* See https://github.com/noelboss/featherlight/issues/42 */
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
+    width: 100%;
+    height: 100%;
 	}
   
 	/* stacked modals */
