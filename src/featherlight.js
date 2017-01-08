@@ -54,39 +54,6 @@
 			return opened;
 		};
 
-	// Removes keys of `set` from `obj` and returns the removed key/values.
-	function slice(obj, set) {
-		var r = {};
-		for (var key in obj) {
-			if (key in set) {
-				r[key] = obj[key];
-				delete obj[key];
-			}
-		}
-		return r;
-	}
-
-	// NOTE: List of available [iframe attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe).
-	var iFrameAttributeSet = {
-		allowfullscreen: 1, frameborder: 1, height: 1, longdesc: 1, marginheight: 1, marginwidth: 1,
-		name: 1, referrerpolicy: 1, scrolling: 1, sandbox: 1, src: 1, srcdoc: 1, width: 1
-	};
-
-	// Converts camelCased attributes to dasherized versions for given prefix:
-	//   parseAttrs({hello: 1, hellFrozeOver: 2}, 'hell') => {froze-over: 2}
-	function parseAttrs(obj, prefix) {
-		var attrs = {},
-			regex = new RegExp('^' + prefix + '([A-Z])(.*)');
-		for (var key in obj) {
-			var match = key.match(regex);
-			if (match) {
-				var dasherized = (match[1] + match[2].replace(/([A-Z])/g, '-$1')).toLowerCase();
-				attrs[dasherized] = obj[key];
-			}
-		}
-		return attrs;
-	}
-
 	/* document wide key handler */
 	var eventMap = { keyup: 'onKeyUp', resize: 'onResize' };
 
@@ -390,12 +357,8 @@
 				process: function(url) {
 					var deferred = new $.Deferred();
 					var $content = $('<iframe/>');
-					var css = parseAttrs(this, 'iframe');
-					var attrs = slice(css, iFrameAttributeSet);
 					$content.hide()
 						.attr('src', url)
-						.attr(attrs)
-						.css(css)
 						.on('load', function() { deferred.resolve($content.show()); })
 						// We can't move an <iframe> and avoid reloading it,
 						// so let's put it in place ourselves right now:
