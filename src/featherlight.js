@@ -264,7 +264,10 @@
 				&& (self.beforeOpen(event) !== false)) {
           
 				$('body').addClass('featherlight-open');
-
+        
+        $('.featherlight').removeClass('active');
+        self.$instance.addClass('active');
+        
 				if (event){
 					event.preventDefault();
 				}
@@ -313,7 +316,11 @@
 					deferred.resolve();
 				});
 
-				$('body').removeClass('featherlight-open');
+        $('.featherlight:not(.active)').filter(':last').addClass('active');
+        
+        if ($('.featherlight').length == 1) {
+				  $('body').removeClass('featherlight-open');
+        }
 			}
 			return deferred.promise();
 		},
