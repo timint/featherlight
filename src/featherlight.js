@@ -80,7 +80,7 @@
 		/*** defaults ***/
 		/* extend featherlight with defaults and methods */
 		namespace:      'featherlight',        /* Name of the events and css class prefix */
-		targetAttr:     'data-featherlight',   /* Attribute of the triggered element that contains the selector to the lightbox content */
+		targetAttr:     'data-target',         /* Attribute of the triggered element that contains the selector to the lightbox content */
 		variant:        null,                  /* Class that will be added to change look of the lightbox */
 		resetCss:       false,                 /* Reset all css */
 		background:     null,                  /* Custom DOM for the background, wrapper and the closebutton */
@@ -161,7 +161,7 @@
 			/* Find which filter applies */
 			var filter = filters[self.type]; /* check explicit type like {type: 'image'} */
 
-			/* check explicit type like data-featherlight="image" */
+			/* check explicit type like data-target="image" */
 			if (!filter && data in filters) {
 				filter = filters[data];
 				data = self.target && targetValue;
