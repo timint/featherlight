@@ -8,8 +8,8 @@
 (function($) {
 	"use strict";
 
-	if('undefined' === typeof $) {
-		if('console' in window){ window.console.info('Too much lightness, Featherlight needs jQuery.'); }
+	if ('undefined' === typeof $) {
+		if ('console' in window){ window.console.info('Too much lightness, Featherlight needs jQuery.'); }
 		return;
 	}
 
@@ -35,7 +35,7 @@
 	*/
 
 	function Featherlight($content, config) {
-		if(this instanceof Featherlight) {  /* called with new */
+		if (this instanceof Featherlight) {  /* called with new */
 			this.id = Featherlight.id++;
 			this.setup($content, config);
 			this.chainCallbacks(Featherlight._callbackChain);
@@ -101,7 +101,7 @@
 	};
 
 	var toggleGlobalEvents = function(set) {
-			if(set !== Featherlight._globalHandlerInstalled) {
+			if (set !== Featherlight._globalHandlerInstalled) {
 				Featherlight._globalHandlerInstalled = set;
 				var events = $.map(eventMap, function(_, name) { return name+'.'+Featherlight.prototype.namespace; } ).join(' ');
 				$(window)[set ? 'on' : 'off'](events, globalEventHandler);
@@ -167,7 +167,7 @@
 			/* close when click on background/anywhere/null or closebox */
 			self.$instance.on(self.closeTrigger+'.'+self.namespace, function(event) {
 				var $target = $(event.target);
-				if( ('background' === self.closeOnClick  && $target.is('.'+self.namespace))
+				if ( ('background' === self.closeOnClick  && $target.is('.'+self.namespace))
 					|| 'anywhere' === self.closeOnClick
 					|| $target.closest(closeButtonSelector).length ){
 					self.close(event);
@@ -180,7 +180,7 @@
 
 		/* this method prepares the content and converts it into a jQuery object or a promise */
 		getContent: function(){
-			if(this.persist !== false && this.$content) {
+			if (this.persist !== false && this.$content) {
 				return this.$content;
 			}
 			var self = this,
@@ -193,16 +193,16 @@
 			var filter = filters[self.type]; /* check explicit type like {type: 'image'} */
 
 			/* check explicit type like data-featherlight="image" */
-			if(!filter && data in filters) {
+			if (!filter && data in filters) {
 				filter = filters[data];
 				data = self.target && targetValue;
 			}
 			data = data || readTargetAttr('href') || '';
 
 			/* check explicity type & content like {image: 'photo.jpg'} */
-			if(!filter) {
+			if (!filter) {
 				for(var filterName in filters) {
-					if(self[filterName]) {
+					if (self[filterName]) {
 						filter = filters[filterName];
 						data = self[filterName];
 					}
@@ -210,12 +210,12 @@
 			}
 
 			/* otherwise it's implicit, run checks */
-			if(!filter) {
+			if (!filter) {
 				var target = data;
 				data = null;
 				$.each(self.contentFilters, function() {
 					filter = filters[this];
-					if(filter.test)  {
+					if (filter.test)  {
 						data = filter.test(target);
 					}
 					if(!data && filter.regex && target.match && target.match(filter.regex)) {
@@ -223,8 +223,8 @@
 					}
 					return !data;
 				});
-				if(!data) {
-					if('console' in window){ window.console.error('Featherlight: no content filter found ' + (target ? ' for "' + target + '"' : ' (no target specified)')); }
+				if (!data) {
+					if ('console' in window){ window.console.error('Featherlight: no content filter found ' + (target ? ' for "' + target + '"' : ' (no target specified)')); }
 					return false;
 				}
 			}
@@ -236,7 +236,7 @@
 		setContent: function($content){
 			var self = this;
 			/* we need a special class for the iframe */
-			if($content.is('iframe') || $('iframe', $content).length > 0){
+			if ($content.is('iframe') || $('iframe', $content).length > 0){
 				self.$instance.addClass(self.namespace+'-iframe');
 			}
 
@@ -260,17 +260,17 @@
 		open: function(event){
 			var self = this;
 			self.$instance.hide().appendTo(self.root);
-			if((!event || !event.isDefaultPrevented())
-				&& self.beforeOpen(event) !== false) {
+			if ((!event || !event.isDefaultPrevented())
+				&& (self.beforeOpen(event) !== false)) {
           
 				$('body').addClass('featherlight-open');
 
-				if(event){
+				if (event){
 					event.preventDefault();
 				}
 				var $content = self.getContent();
 
-				if($content) {
+				if ($content) {
 					opened.push(self);
 
 					toggleGlobalEvents(true);
@@ -299,7 +299,7 @@
 			var self = this,
 				deferred = $.Deferred();
 
-			if(self.beforeClose(event) === false) {
+			if (self.beforeClose(event) === false) {
 				deferred.reject();
 			} else {
 
@@ -496,7 +496,7 @@
 
 		close: function(event) {
 			var cur = this.current();
-			if(cur) { return cur.close(event); }
+			if (cur) { return cur.close(event); }
 		},
 
 		/* Does the auto binding on startup.
@@ -504,7 +504,7 @@
 		*/
 		_onReady: function() {
 			var Klass = this;
-			if(Klass.autoBind){
+			if (Klass.autoBind){
 				/* Bind existing elements */
 				$(Klass.autoBind).each(function(){
 					Klass.attach($(this));
@@ -528,7 +528,7 @@
 		*/
 		_callbackChain: {
 			onKeyUp: function(_super, event){
-				if(27 === event.keyCode) {
+				if (27 === event.keyCode) {
 					if (this.closeOnEsc) {
 						$.featherlight.close(event);
 					}
@@ -544,7 +544,7 @@
 
 				// Disable tabbing:
 				// See http://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus
-				this._$previouslyTabbable = $("a, input, select, textarea, iframe, button, iframe, [contentEditable=true]")
+				this._$previouslyTabbable = $('a, input, select, textarea, iframe, button, iframe, [contentEditable=true]')
 					.not('[tabindex]')
 					.not(this.$instance.find('button'));
 
