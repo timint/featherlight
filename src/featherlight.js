@@ -290,7 +290,7 @@
 
 				$('.featherlight:not(.active)').filter(':last').addClass('active');
 
-				if ($('.featherlight').length == 1) {
+				if ($('.featherlight').length === 1) {
 					$('body').removeClass('featherlight-open');
 				}
 			}
