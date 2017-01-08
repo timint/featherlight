@@ -187,7 +187,7 @@
 					if (filter.test)  {
 						data = filter.test(target);
 					}
-					if(!data && filter.regex && target.match && target.match(filter.regex)) {
+					if (!data && filter.regex && target.match && target.match(filter.regex)) {
 						data = target;
 					}
 					return !data;
@@ -231,12 +231,12 @@
 			self.$instance.hide().appendTo(self.root);
 			if ((!event || !event.isDefaultPrevented())
 				&& (self.beforeOpen(event) !== false)) {
-          
+
 				$('body').addClass('featherlight-open');
-        
-        $('.featherlight').removeClass('active');
-        self.$instance.addClass('active');
-        
+
+				$('.featherlight').removeClass('active');
+				self.$instance.addClass('active');
+
 				if (event){
 					event.preventDefault();
 				}
@@ -288,11 +288,11 @@
 					deferred.resolve();
 				});
 
-        $('.featherlight:not(.active)').filter(':last').addClass('active');
-        
-        if ($('.featherlight').length == 1) {
-				  $('body').removeClass('featherlight-open');
-        }
+				$('.featherlight:not(.active)').filter(':last').addClass('active');
+
+				if ($('.featherlight').length == 1) {
+					$('body').removeClass('featherlight-open');
+				}
 			}
 			return deferred.promise();
 		},
@@ -447,9 +447,9 @@
 					Klass.readElementConfig(this),
 					config);
 				var fl = sharedPersist || $(this).data('featherlight-persisted') || new Klass($content, elemConfig);
-				if(fl.persist === 'shared') {
+				if (fl.persist === 'shared') {
 					sharedPersist = fl;
-				} else if(fl.persist !== false) {
+				} else if (fl.persist !== false) {
 					$(this).data('featherlight-persisted', fl);
 				}
 				elemConfig.$currentTarget.blur(); // Otherwise 'enter' key might trigger the dialog again
