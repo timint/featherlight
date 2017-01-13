@@ -207,15 +207,8 @@
 
 			self.$instance.removeClass(self.namespace+'-loading');
 
-			/* replace content by appending to existing one before it is removed
-			   this insures that featherlight-inner remain at the same relative
-				 position to any other items added to featherlight-content */
-			self.$instance.find('.'+self.namespace+'-inner')
-				.not($content)                /* excluded new content, important if persisted */
-				.slice(1).remove().end()      /* In the unexpected event where there are many inner elements, remove all but the first one */
-				.replaceWith($.contains(self.$instance[0], $content[0]) ? '' : $content);
-
-			self.$content = $content;
+      self.$content = $content.show();
+      self.$instance.find('.'+self.namespace+'-content').html(self.$content);
 
 			return self;
 		},
