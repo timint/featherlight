@@ -317,7 +317,7 @@
 					var self = this,
 						deferred = $.Deferred(),
 						img = new Image(),
-						$img = $('<img src="'+url+'" alt="" class="'+self.namespace+'-image" />');
+						$img = $('<img src="'+url+'" alt="" />');
 					img.onload  = function() {
 						/* Store naturalWidth & height for IE8 */
 						$img.naturalWidth = img.width; $img.naturalHeight = img.height;
