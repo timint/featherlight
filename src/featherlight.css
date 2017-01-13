@@ -112,17 +112,12 @@
 		padding: 0;
 	}
 
-	.featherlight .featherlight-image {
+	.featherlight-content > img {
 		/* styling */
-		width: 100%;
+		max-width: 100%;
 	}
 
-	.featherlight-iframe .featherlight-content {
-		-webkit-overflow-scrolling: touch;
-		overflow-y: auto;
-	}
-
-	.featherlight iframe {
+	.featherlight-content > iframe {
 		/* styling */
 		border: none;
     width: 100%;
