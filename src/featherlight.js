@@ -1,6 +1,6 @@
 /**
  * Featherlight - ultra slim jQuery lightbox
- * Version 1.7.0 - http://noelboss.github.io/featherlight/
+ * Version 1.7.1 - http://noelboss.github.io/featherlight/
  *
  * Copyright 2017, Noël Raoul Bossart (http://www.noelboss.com)
  * MIT Licensed.
@@ -427,8 +427,7 @@
 			var namespace = config.namespace || Klass.defaults.namespace,
 				tempConfig = $.extend({}, Klass.defaults, Klass.readElementConfig($source[0]), config),
 				sharedPersist;
-
-			$source.on(tempConfig.openTrigger+'.'+tempConfig.namespace, tempConfig.filter, function(event) {
+			var handler = function(event) {
 				/* ... since we might as well compute the config on the actual target */
 				var elemConfig = $.extend(
 					{$source: $source, $currentTarget: $(this)},
@@ -443,8 +442,11 @@
 				}
 				elemConfig.$currentTarget.blur(); // Otherwise 'enter' key might trigger the dialog again
 				fl.open(event);
-			});
-			return $source;
+			};
+
+			$source.on(tempConfig.openTrigger+'.'+tempConfig.namespace, tempConfig.filter, handler);
+
+			return handler;
 		},
 
 		current: function() {
@@ -475,14 +477,13 @@
 				});
 				/* If a click propagates to the document level, then we have an item that was added later on */
 				$(document).on('click', Klass.autoBind, function(evt) {
-					if (evt.isDefaultPrevented() || evt.namespace === 'featherlight') {
+					if (evt.isDefaultPrevented()) {
 						return;
 					}
-					evt.preventDefault();
 					/* Bind featherlight */
-					Klass.attach($(evt.currentTarget));
-					/* Click again; this time our binding will catch it */
-					$(evt.target).trigger('click.featherlight');
+					var handler = Klass.attach($(evt.currentTarget));
+					/* Dispatch event directly */
+					handler(evt);
 				});
 			}
 		},
@@ -551,7 +552,8 @@
 
 	/* bind jQuery elements to trigger featherlight */
 	$.fn.featherlight = function($content, config) {
-		return Featherlight.attach(this, $content, config);
+		Featherlight.attach(this, $content, config);
+		return this;
 	};
 
 	/* bind featherlight on ready if config autoBind is set */
