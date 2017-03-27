@@ -36,16 +36,20 @@ module.exports = function(grunt) {
 				},
 				uses_defaults: ['src/**/*.js']
 		},
+    less: {
+      featherlight: {
+        options: {
+          compress: true,
+          relativeUrls: true
+        },
+        files: {
+          'src/<%= pkg.name %>.less'       : 'release/<%= pkg.name %>.css',
+        }
+      },
+    },
 		cssmin: {
 			options: {
 				keepSpecialComments: 1
-			},
-			featherlight: {
-				options: {
-					banner: banner
-				},
-				src: 'src/<%= pkg.name %>.css',
-				dest: 'release/<%= pkg.name %>.min.css'
 			},
 			gallery: {
 				options: {
@@ -174,13 +178,14 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-text-replace');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-jquerymanifest');
 	grunt.loadNpmTasks('grunt-mocha');
 	grunt.loadNpmTasks('grunt-bump');
 
 	// Default task(s).
-	grunt.registerTask('default', ['jshint',  'replace:src', 'replace:min', 'uglify', 'cssmin', 'jquerymanifest']);
+	grunt.registerTask('default', ['jshint',  'replace:src', 'replace:min', 'uglify', 'less', 'cssmin', 'jquerymanifest']);
 	grunt.registerTask('test-release', ['bump-only:patch', 'jshint', 'replace', 'uglify', 'cssmin', 'jquerymanifest']);
 
 	grunt.registerTask('patch',   ['bump-only:patch', 'jshint', 'replace:src', 'replace:min', 'uglify', 'cssmin', 'jquerymanifest', 'bump-commit', 'replace:changelog',]);
