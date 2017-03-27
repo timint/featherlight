@@ -43,22 +43,19 @@ module.exports = function(grunt) {
           relativeUrls: true
         },
         files: {
-          'src/<%= pkg.name %>.less'       : 'release/<%= pkg.name %>.css',
+          'release/<%= pkg.name %>.min.css': 'src/<%= pkg.name %>.less',
+        }
+      },
+      gallery: {
+        options: {
+          compress: true,
+          relativeUrls: true
+        },
+        files: {
+          'release/<%= pkg.name %>.gallery.min.css': 'src/<%= pkg.name %>.gallery.less',
         }
       },
     },
-		cssmin: {
-			options: {
-				keepSpecialComments: 1
-			},
-			gallery: {
-				options: {
-					banner: gallery
-				},
-				src: 'src/<%= pkg.name %>.gallery.css',
-				dest: 'release/<%= pkg.name %>.gallery.min.css'
-			}
-		},
 		jquerymanifest: {
 			options: {
 				source: grunt.file.readJSON('package.json'),
@@ -179,18 +176,17 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-text-replace');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-jquerymanifest');
 	grunt.loadNpmTasks('grunt-mocha');
 	grunt.loadNpmTasks('grunt-bump');
 
 	// Default task(s).
-	grunt.registerTask('default', ['jshint',  'replace:src', 'replace:min', 'uglify', 'less', 'cssmin', 'jquerymanifest']);
-	grunt.registerTask('test-release', ['bump-only:patch', 'jshint', 'replace', 'uglify', 'cssmin', 'jquerymanifest']);
+	grunt.registerTask('default', ['jshint',  'replace:src', 'replace:min', 'uglify', 'less', 'jquerymanifest']);
+	grunt.registerTask('test-release', ['bump-only:patch', 'jshint', 'replace', 'uglify', 'less', 'jquerymanifest']);
 
-	grunt.registerTask('patch',   ['bump-only:patch', 'jshint', 'replace:src', 'replace:min', 'uglify', 'cssmin', 'jquerymanifest', 'bump-commit', 'replace:changelog',]);
-	grunt.registerTask('minor',   ['bump-only:minor', 'jshint', 'replace:src', 'replace:min', 'uglify', 'cssmin', 'jquerymanifest', 'bump-commit', 'replace:changelog',]);
-	grunt.registerTask('major',   ['bump-only:major', 'jshint', 'replace:src', 'replace:min', 'uglify', 'cssmin', 'jquerymanifest', 'bump-commit', 'replace:changelog',]);
+	grunt.registerTask('patch',   ['bump-only:patch', 'jshint', 'replace:src', 'replace:min', 'uglify', 'less', 'jquerymanifest', 'bump-commit', 'replace:changelog',]);
+	grunt.registerTask('minor',   ['bump-only:minor', 'jshint', 'replace:src', 'replace:min', 'uglify', 'less', 'jquerymanifest', 'bump-commit', 'replace:changelog',]);
+	grunt.registerTask('major',   ['bump-only:major', 'jshint', 'replace:src', 'replace:min', 'uglify', 'less', 'jquerymanifest', 'bump-commit', 'replace:changelog',]);
 
 	grunt.registerTask('test',    ['jshint', 'mocha']);
 };
