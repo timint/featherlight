@@ -6,10 +6,10 @@
  * MIT Licensed.
 **/
 (function($) {
-	"use strict";
+	'use strict';
 
 	var warn = function(m) {
-		if(window.console && window.console.warn) {
+		if (window.console && window.console.warn) {
 			window.console.warn('FeatherlightGallery: ' + m);
 		}
 	};
