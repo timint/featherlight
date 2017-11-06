@@ -169,13 +169,25 @@ module.exports = function(grunt) {
 				run: true,
 			},
 		},
+
+		watch: {
+			css: {
+				files: ['src/*.less'],
+				tasks: ['less']
+			},
+			javascripts: {
+				files: ['src/*.js'],
+				tasks: ['uglify']
+			},
+		}
 	});
 
 	// Load the plugin that provides the "uglify" task.
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-text-replace');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-jquerymanifest');
 	grunt.loadNpmTasks('grunt-mocha');
 	grunt.loadNpmTasks('grunt-bump');
