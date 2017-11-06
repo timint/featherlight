@@ -94,7 +94,6 @@
 		closeSpeed:     250,                   /* Duration of closing animation */
 		closeOnClick:   'background',          /* Close lightbox on click ('background', 'anywhere' or false) */
 		closeOnEsc:     true,                  /* Close lightbox when pressing esc */
-		closeIcon:      '',                    /* Close icon */
 		loading:        '',                    /* Content to show while initial content is loading */
 		persist:        false,                 /* If set, the content will persist and will be shown again when opened again. 'shared' is a special value when binding multiple elements for them to share the same content */
 		otherClose:     null,                  /* Selector for alternate close buttons (e.g. "a.close") */
@@ -107,6 +106,7 @@
 		onKeyUp:        $.noop,                /* Called on key up for the frontmost featherlight */
 		onResize:       $.noop,                /* Called after new content and when a window is resized */
 		type:           null,                  /* Specify type of lightbox. If unset, it will check for the targetAttrs value. */
+		closeIcon:      '&#x2716;',            /* Close icon */
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
 		width:          'auto',                /* Specify width of lightbox. */
 		height:         'auto',                /* Specify width of lightbox. */
@@ -125,9 +125,6 @@
 				$background = $(self.background || [
 					'<div class="'+css+'-loading '+css+'">',
 						'<div class="'+css+'-content">',
-							self.closeIcon ? '<button class="'+css+'-close-icon '+ self.namespace + '-close" aria-label="Close">' : null,
-								self.closeIcon ? self.closeIcon : null,
-							self.closeIcon ? '</button>' : null,
 							'<div class="'+self.namespace+'-inner">' + self.loading + '</div>',
 						'</div>',
 					'</div>'].join('')),
@@ -211,8 +208,16 @@
 
 			self.$instance.removeClass(self.namespace+'-loading');
 
-      self.$content = $content.show();
-      self.$instance.find('.'+self.namespace+'-content').html(self.$content);
+			self.$content = $content.show();
+			self.$instance.find('.'+self.namespace+'-content').html(self.$content);
+
+			if (self.closeIcon) {
+				self.$instance.find('.'+self.namespace+'-content').prepend(
+					'<button class="'+ self.namespace +'-close-icon '+ self.namespace + '-close" aria-label="Close">' +
+					self.closeIcon +
+					'</button>'
+				);
+			}
 
 			return self;
 		},
