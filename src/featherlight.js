@@ -6,10 +6,12 @@
  * MIT Licensed.
 **/
 (function($) {
-	"use strict";
+	'use strict';
 
 	if ('undefined' === typeof $) {
-		if ('console' in window){ window.console.info('Too much lightness, Featherlight needs jQuery.'); }
+		if ('console' in window) {
+			window.console.error('Featherlight requires jQuery.');
+		}
 		return;
 	}
 
@@ -62,7 +64,7 @@
 			if (!event.isDefaultPrevented()) {
 				if (false === this[eventMap[event.type]](event)) {
 					event.preventDefault(); event.stopPropagation(); return false;
-			  }
+				}
 			}
 		});
 	};
@@ -136,7 +138,7 @@
 			/* close when click on background/anywhere/null or closebox */
 			self.$instance.on(self.closeTrigger+'.'+self.namespace, function(event) {
 				var $target = $(event.target);
-				if ( ('background' === self.closeOnClick  && $target.is('.'+self.namespace))
+				if ( ('background' === self.closeOnClick && $target.is('.'+self.namespace))
 					|| 'anywhere' === self.closeOnClick
 					|| $target.closest(closeButtonSelector).length ){
 					self.close(event);
@@ -184,7 +186,7 @@
 				data = null;
 				$.each(self.contentFilters, function() {
 					filter = filters[this];
-					if (filter.test)  {
+					if (filter.test) {
 						data = filter.test(target);
 					}
 					if (!data && filter.regex && target.match && target.match(filter.regex)) {
@@ -193,7 +195,9 @@
 					return !data;
 				});
 				if (!data) {
-					if ('console' in window){ window.console.error('Featherlight: no content filter found ' + (target ? ' for "' + target + '"' : ' (no target specified)')); }
+					if ('console' in window ){
+						window.console.error('Featherlight: no content filter found ' + (target ? ' for "' + target + '"' : ' (no target specified)'));
+					}
 					return false;
 				}
 			}
@@ -216,10 +220,13 @@
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
 			Returns a promise that is resolved after is successfully opened. */
 		open: function(event){
-      if (event.ctrlKey || event.shiftKey) return false;
+			if (event && (event.ctrlKey || event.shiftKey)) {
+				return false;
+			}
 
 			var self = this;
 			self.$instance.hide().appendTo(self.root);
+
 			if ((!event || !event.isDefaultPrevented())
 				&& (self.beforeOpen(event) !== false)) {
 
@@ -245,9 +252,12 @@
 					return $.when($content)
 						.always(function($content){
 							self.setContent($content);
-							self.$content.parent()
-								.css('width', self.width)
-								.css('height', self.height);
+							if (self.width) {
+								self.$content.parent().css('width', self.width);
+							}
+							if (self.height) {
+								self.$content.parent().css('height', self.height);
+							}
 							self.afterContent(event);
 						})
 						.then(self.$instance.promise())
@@ -315,12 +325,12 @@
 			},
 			image: {
 				regex: /\.(png|jpg|jpeg|gif|tiff|bmp|svg)(\?\S*)?$/i,
-				process: function(url)  {
+				process: function(url) {
 					var self = this,
-						deferred = $.Deferred(),
-						img = new Image(),
-						$img = $('<img src="'+url+'" alt="" />');
-					img.onload  = function() {
+					    deferred = $.Deferred(),
+					    img = new Image(),
+					    $img = $('<img src="'+url+'" alt="" />');
+					img.onload = function() {
 						/* Store naturalWidth & height for IE8 */
 						$img.naturalWidth = img.width; $img.naturalHeight = img.height;
 						deferred.resolve( $img );
