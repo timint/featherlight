@@ -90,8 +90,6 @@
 		closeTrigger:   'click',               /* Event that triggers the closing of the lightbox */
 		filter:         null,                  /* Selector to filter events. Think $(...).on('click', filter, eventHandler) */
 		root:           'body',                /* Where to append featherlights */
-		openSpeed:      250,                   /* Duration of opening animation */
-		closeSpeed:     250,                   /* Duration of closing animation */
 		closeOnClick:   'background',          /* Close lightbox on click ('background', 'anywhere' or false) */
 		closeOnEsc:     true,                  /* Close lightbox when pressing esc */
 		loading:        '',                    /* Content to show while initial content is loading */
@@ -106,6 +104,8 @@
 		onKeyUp:        $.noop,                /* Called on key up for the frontmost featherlight */
 		onResize:       $.noop,                /* Called after new content and when a window is resized */
 		type:           null,                  /* Specify type of lightbox. If unset, it will check for the targetAttrs value. */
+		openSpeed:      50,                    /* Duration of opening animation */
+		closeSpeed:     50,                    /* Duration of closing animation */
 		closeIcon:      '&#x2716;',            /* Close icon */
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
 		width:          'auto',                /* Specify width of lightbox. */
