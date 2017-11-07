@@ -115,8 +115,8 @@
 		closeSpeed:     50,                    /* Duration of closing animation */
 		closeIcon:      '&#x2716;',            /* Close icon */
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
-		width:          'auto',                /* Specify width of lightbox. */
-		height:         'auto',                /* Specify width of lightbox. */
+		width:          '',                /* Specify width of lightbox. */
+		height:         '',                /* Specify width of lightbox. */
 
 		/*** methods ***/
 		/* setup iterates over a single instance of featherlight and prepares the background and binds the events */
