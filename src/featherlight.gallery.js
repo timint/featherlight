@@ -8,14 +8,11 @@
 (function($) {
 	'use strict';
 
-	var warn = function(m) {
-		if (window.console && window.console.warn) {
-			window.console.warn('FeatherlightGallery: ' + m);
-		}
-	}
-  
 	if (!$.featherlight) {
-		return warn('Load the featherlight plugin before the gallery plugin');
+		if ('console' in window) {
+			window.console.warn('Load the featherlight plugin before the gallery plugin');
+		}
+		return;
 	}
 
 	var isTouchAware = ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch,
@@ -28,7 +25,9 @@
 		swipeAwareConstructor = isTouchAware && (jQueryConstructor || hammerConstructor);
     
 	if (isTouchAware && !swipeAwareConstructor) {
-		warn('No compatible swipe library detected; one must be included before featherlightGallery for swipe motions to navigate the galleries.');
+		if ('console' in window) {
+			window.console.warn('No compatible swipe library detected; one must be included before featherlightGallery for swipe motions to navigate the galleries.');
+		}
 	}
 
 	var callbackChain = {
