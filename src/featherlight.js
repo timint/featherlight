@@ -111,7 +111,6 @@
 		onKeyUp:        $.noop,                /* Called on key up for the frontmost featherlight */
 		onResize:       $.noop,                /* Called after new content and when a window is resized */
 		type:           null,                  /* Specify type of lightbox. If unset, it will check for the data-type attribute value or try to identify from contentFilters. */
-		closeSpeed:     50,                    /* Duration of closing animation */
 		closeIcon:      '&#x2716;',            /* Close icon */
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
 		width:          '',                    /* Specify width of lightbox. */
@@ -274,7 +273,7 @@
 							self.afterContent(event);
 						})
 						.then(self.$instance.promise())
-						/* Call afterOpen after fadeIn is done */
+						/* Call afterOpen after show() is done */
 						.done(function(){ self.afterOpen(event); });
 				}
 			}
@@ -296,15 +295,13 @@
 					toggleGlobalEvents(false);
 				}
 
-				self.$instance.fadeOut(self.closeSpeed,function(){
-					self.$instance.detach();
-					self.afterClose(event);
-					deferred.resolve();
-				});
+				self.$instance.hide().detach();
+				self.afterClose(event);
+				deferred.resolve();
 
 				$('.featherlight:not(.active)').filter(':last').addClass('active');
 
-				if ($('.featherlight').length === 1) {
+				if ($('.featherlight').length === 0) {
 					$('body').removeClass('featherlight-open');
 				}
 			}
