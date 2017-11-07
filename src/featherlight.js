@@ -326,8 +326,8 @@
 	};
 
 	$.extend(Featherlight, {
-		autoBind:       '[data-toggle="lightbox"][data-target]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
 		id: 0,                                      /* Used to id single featherlight instances */
+		autoBind:       '[data-toggle="lightbox"]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
 		defaults:       Featherlight.prototype,     /* You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype */
 		/* Contains the logic to determine content */
 		contentFilters: {
