@@ -1,6 +1,6 @@
 /**
  * Featherlight - ultra slim jQuery lightbox
- * Version 1.7.1 - http://noelboss.github.io/featherlight/
+ * Version 1.7.9 - http://noelboss.github.io/featherlight/
  *
  * Copyright 2017, Noël Raoul Bossart (http://www.noelboss.com)
  * MIT Licensed.
@@ -14,7 +14,10 @@
 		}
 		return;
 	}
-
+	if($.fn.jquery.match(/-ajax/)) {
+		if('console' in window){ window.console.info('Featherlight needs regular jQuery, not the slim version.'); }
+		return;
+	}
 	/* Featherlight is exported as $.featherlight.
 	   It is a function used to open a featherlight lightbox.
 
@@ -233,7 +236,7 @@
 			self.$instance.hide().appendTo(self.root);
 
 			if ((!event || !event.isDefaultPrevented())
-				&& (self.beforeOpen(event) !== false)) {
+				&& self.beforeOpen(event) !== false) {
 
 				$('body').addClass('featherlight-open');
 
@@ -329,7 +332,7 @@
 				process: function(elem) { return this.persist !== false ? $(elem) : $(elem).clone(true); }
 			},
 			image: {
-				regex: /\.(png|jpg|jpeg|gif|tiff|bmp|svg)(\?\S*)?$/i,
+				regex: /\.(png|jpg|jpeg|gif|tiff?|bmp|svg)(\?\S*)?$/i,
 				process: function(url) {
 					var self = this,
 					    deferred = $.Deferred(),
@@ -445,19 +448,22 @@
 				tempConfig = $.extend({}, Klass.defaults, Klass.readElementConfig($source[0]), config),
 				sharedPersist;
 			var handler = function(event) {
+				var $target = $(event.currentTarget);
 				/* ... since we might as well compute the config on the actual target */
 				var elemConfig = $.extend(
-					{$source: $source, $currentTarget: $(this)},
+					{$source: $source, $currentTarget: $target},
 					Klass.readElementConfig($source[0]),
 					Klass.readElementConfig(this),
 					config);
-				var fl = sharedPersist || $(this).data('featherlight-persisted') || new Klass($content, elemConfig);
+				var fl = sharedPersist || $target.data('featherlight-persisted') || new Klass($content, elemConfig);
 				if (fl.persist === 'shared') {
 					sharedPersist = fl;
 				} else if (fl.persist !== false) {
-					$(this).data('featherlight-persisted', fl);
+					$target.data('featherlight-persisted', fl);
 				}
-				elemConfig.$currentTarget.blur(); // Otherwise 'enter' key might trigger the dialog again
+				if (elemConfig.$currentTarget.blur) {
+					elemConfig.$currentTarget.blur(); // Otherwise 'enter' key might trigger the dialog again
+				}
 				fl.open(event);
 			};
 
@@ -521,6 +527,9 @@
 			},
 
 			beforeOpen: function(_super, event) {
+				// Used to disable scrolling
+				$(document.documentElement).addClass('with-featherlight');
+
 				// Remember focus:
 				this._previouslyActive = document.activeElement;
 
@@ -537,18 +546,25 @@
 
 				this._$previouslyWithTabIndex.add(this._$previouslyTabbable).attr('tabindex', -1);
 
-				document.activeElement.blur();
+				if (document.activeElement.blur) {
+					document.activeElement.blur();
+				}
 				return _super(event);
 			},
 
 			afterClose: function(_super, event) {
 				var r = _super(event);
+				// Restore focus
 				var self = this;
 				this._$previouslyTabbable.removeAttr('tabindex');
 				this._$previouslyWithTabIndex.each(function(i, elem) {
 					$(elem).attr('tabindex', self._previousWithTabIndices[i]);
 				});
 				this._previouslyActive.focus();
+				// Restore scroll
+				if(Featherlight.opened().length === 0) {
+					$(document.documentElement).removeClass('with-featherlight');
+				}
 				return r;
 			},
 
