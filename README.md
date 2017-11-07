@@ -29,7 +29,7 @@ Examples:
 
     <a href="../assets/images/two_birds.jpg" data-toggle="lightbox">Image</a>
 
-    <a href="https://player.vimeo.com/video/33110953" data-toggle="lightbox" data-type="iframe" data-width="720" data-height="420" data-openTrigger="hover">Video (iframe)</a>
+    <a href="https://player.vimeo.com/video/33110953" data-toggle="lightbox" data-type="iframe" data-width="720" data-height="420">Video (iframe)</a>
 
     <a href="demo_ajax_content.html" data-toggle="lightbox" data-type="ajax">Ajax (Full Page)</a>
 

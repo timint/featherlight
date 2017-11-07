@@ -10,16 +10,17 @@
 
 <h1>LiteCart Featherlight Demo</h1>
 
-Inspect an element to view it's code.
+<p>Inspect an element to view it's code.</p>
 
 <h2>General</h2>
 
 <ul>
   <li><a href="#mybox" data-toggle="lightbox">Div Content</a></li>
   <li><a href="#mybox-persistent" data-toggle="lightbox" data-persist=true>Div Content (Persist)</a></li>
+  <li><a href="#mybox-modal" data-toggle="lightbox" data-width="500" data-height="500">Modal in a Modal</a></li>
   <li><a href="#" data-toggle="lightbox" data-target="This is a bunch of text" data-type="text">Text Content</a></li>
   <li><a href="../assets/images/two_birds.jpg" data-toggle="lightbox">Image</a></li>
-  <li><a href="https://player.vimeo.com/video/33110953" data-toggle="lightbox" data-type="iframe" data-width="720" data-height="420" data-openTrigger="hover">Video (iframe)</a></li>
+  <li><a href="https://player.vimeo.com/video/33110953" data-toggle="lightbox" data-type="iframe" data-width="720" data-height="420">Video (iframe)</a></li>
   <li><a href="demo_ajax_content.html" data-toggle="lightbox" data-type="ajax">Ajax (Full Page)</a></li>
   <li><a href="demo_ajax_content.html .ajax-content-1" data-toggle="lightbox" data-type="ajax">Ajax (Element 1)</a> | <a href="demo_ajax_content.html .ajax-content-2" data-toggle="lightbox" data-type="ajax">Element 2</a></li>
 </ul>
@@ -40,6 +41,10 @@ Inspect an element to view it's code.
 <div id="mybox-persistent" style="display: none;">
   <div>Type something, close and open again</div>
   <input/>
+</div>
+
+<div id="mybox-modal" style="display: none;">
+  <a href="#mybox" data-toggle="lightbox">Click here to open a modal from a modal</div>
 </div>
 
 <script src="../assets/javascripts/jquery-3.2.1.min.js"></script>
