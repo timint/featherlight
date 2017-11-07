@@ -2,6 +2,8 @@ This is a fork of Featherlight.
 
 The original version can be found at https://github.com/noelboss/featherlight/.
 
+For a demonstration see https://timint.github.io/featherlight/release/demo.html.
+
 Please note the syntax is different.
 
 What used to be:
