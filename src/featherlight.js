@@ -114,8 +114,8 @@
 		closeSpeed:     50,                    /* Duration of closing animation */
 		closeIcon:      '&#x2716;',            /* Close icon */
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
-		width:          '',                /* Specify width of lightbox. */
-		height:         '',                /* Specify width of lightbox. */
+		width:          '',                    /* Specify width of lightbox. */
+		height:         '',                    /* Specify width of lightbox. */
 
 		/*** methods ***/
 		/* setup iterates over a single instance of featherlight and prepares the background and binds the events */
@@ -198,6 +198,7 @@
 					}
 					return !data;
 				});
+
 				if (!data) {
 					if ('console' in window ){
 						window.console.error('Featherlight: no content filter found ' + (target ? ' for "' + target + '"' : ' (no target specified)'));
@@ -330,11 +331,13 @@
 		defaults:       Featherlight.prototype,     /* You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype */
 		/* Contains the logic to determine content */
 		contentFilters: {
+
 			jquery: {
 				regex: /^[#.]\w/,         /* Anything that starts with a class name or identifiers */
 				test: function(elem)    { return elem instanceof $ && elem; },
 				process: function(elem) { return this.persist !== false ? $(elem) : $(elem).clone(true); }
 			},
+
 			image: {
 				regex: /\.(png|jpg|jpeg|gif|tiff?|bmp|svg)(\?\S*)?$/i,
 				process: function(url) {
@@ -352,10 +355,12 @@
 					return deferred.promise();
 				}
 			},
+
 			html: {
 				regex: /^\s*<[\w!][^<]*>/, /* Anything that starts with some kind of valid tag */
 				process: function(html) { return $(html); }
 			},
+
 			ajax: {
 				regex: /./,            /* At this point, any content is assumed to be an URL */
 				process: function(url)  {
@@ -371,6 +376,7 @@
 					return deferred.promise();
 				}
 			},
+
 			iframe: {
 				process: function(url) {
 					var deferred = new $.Deferred();
@@ -384,6 +390,7 @@
 					return deferred.promise();
 				}
 			},
+
 			text: {
 				process: function(text) { return $('<div>', {text: text}); }
 			}
