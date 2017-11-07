@@ -14,10 +14,14 @@
 		}
 		return;
 	}
-	if($.fn.jquery.match(/-ajax/)) {
-		if('console' in window){ window.console.info('Featherlight needs regular jQuery, not the slim version.'); }
+
+	if ($.fn.jquery.match(/-ajax/)) {
+		if ('console' in window) {
+			window.console.info('Featherlight needs regular jQuery, not the slim version.');
+		}
 		return;
 	}
+
 	/* Featherlight is exported as $.featherlight.
 	   It is a function used to open a featherlight lightbox.
 
@@ -70,15 +74,15 @@
 				}
 			}
 		});
-	};
+	}
 
 	var toggleGlobalEvents = function(set) {
-			if (set !== Featherlight._globalHandlerInstalled) {
-				Featherlight._globalHandlerInstalled = set;
-				var events = $.map(eventMap, function(_, name) { return name+'.'+Featherlight.prototype.namespace; } ).join(' ');
-				$(window)[set ? 'on' : 'off'](events, globalEventHandler);
-			}
-		};
+		if (set !== Featherlight._globalHandlerInstalled) {
+			Featherlight._globalHandlerInstalled = set;
+			var events = $.map(eventMap, function(_, name) { return name+'.'+Featherlight.prototype.namespace; } ).join(' ');
+			$(window)[set ? 'on' : 'off'](events, globalEventHandler);
+		}
+	};
 
 	Featherlight.prototype = {
 		constructor: Featherlight,
@@ -106,7 +110,7 @@
 		afterClose:     $.noop,                /* Called after close. Gets event as parameter, this contains all data */
 		onKeyUp:        $.noop,                /* Called on key up for the frontmost featherlight */
 		onResize:       $.noop,                /* Called after new content and when a window is resized */
-		type:           null,                  /* Specify type of lightbox. If unset, it will check for the targetAttrs value. */
+		type:           null,                  /* Specify type of lightbox. If unset, it will check for the data-type attribute value or try to identify from contentFilters. */
 		openSpeed:      50,                    /* Duration of opening animation */
 		closeSpeed:     50,                    /* Duration of closing animation */
 		closeIcon:      '&#x2716;',            /* Close icon */
@@ -154,6 +158,7 @@
 			if (this.persist !== false && this.$content) {
 				return this.$content;
 			}
+
 			var self = this,
 				filters = this.constructor.contentFilters,
 				readTargetAttr = function(name){ return self.$currentTarget && self.$currentTarget.attr(name); },
@@ -172,7 +177,7 @@
 
 			/* check explicity type & content like {image: 'photo.jpg'} */
 			if (!filter) {
-				for(var filterName in filters) {
+				for (var filterName in filters) {
 					if (self[filterName]) {
 						filter = filters[filterName];
 						data = self[filterName];
@@ -321,9 +326,9 @@
 	};
 
 	$.extend(Featherlight, {
-		id: 0,                                    /* Used to id single featherlight instances */
 		autoBind:       '[data-toggle="lightbox"][data-target]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
-		defaults:       Featherlight.prototype,   /* You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype */
+		id: 0,                                      /* Used to id single featherlight instances */
+		defaults:       Featherlight.prototype,     /* You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype */
 		/* Contains the logic to determine content */
 		contentFilters: {
 			jquery: {
@@ -527,8 +532,6 @@
 			},
 
 			beforeOpen: function(_super, event) {
-				// Used to disable scrolling
-				$(document.documentElement).addClass('with-featherlight');
 
 				// Remember focus:
 				this._previouslyActive = document.activeElement;
@@ -549,11 +552,13 @@
 				if (document.activeElement.blur) {
 					document.activeElement.blur();
 				}
+
 				return _super(event);
 			},
 
 			afterClose: function(_super, event) {
 				var r = _super(event);
+
 				// Restore focus
 				var self = this;
 				this._$previouslyTabbable.removeAttr('tabindex');
@@ -561,10 +566,6 @@
 					$(elem).attr('tabindex', self._previousWithTabIndices[i]);
 				});
 				this._previouslyActive.focus();
-				// Restore scroll
-				if(Featherlight.opened().length === 0) {
-					$(document.documentElement).removeClass('with-featherlight');
-				}
 				return r;
 			},
 
