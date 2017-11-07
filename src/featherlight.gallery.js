@@ -150,8 +150,8 @@
 
 		createNavigation: function(target) {
 			var self = this;
-			return $('<div class="'+this.namespace+'-'+target+'" title="'+target+'"><span>'+this[target+'Icon']+'</span></div>').click(function(){
-				$(this).trigger(target+'.'+self.namespace);
+			return $('<div class="'+self.namespace+'-'+target+'"><span>'+self[target+'Icon']+'</span></div>').click(function(){
+				$(self).trigger(target+'.'+self.namespace);
 			});
 		}
 	});
