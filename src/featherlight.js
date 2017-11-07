@@ -221,9 +221,9 @@
 
 			if (self.closeIcon) {
 				self.$instance.find('.'+self.namespace+'-content').prepend(
-					'<button class="'+ self.namespace +'-close-icon '+ self.namespace + '-close" aria-label="Close">' +
+					'<div class="'+ self.namespace +'-close-icon '+ self.namespace + '-close" aria-label="Close">' +
 					self.closeIcon +
-					'</button>'
+					'</div>'
 				);
 			}
 
