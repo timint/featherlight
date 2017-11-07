@@ -110,6 +110,15 @@ body.featherlight-open {
 }
 
 .featherlight-loading {
+  .featherlight-loader {
+    border: 15px solid #f3f3f3;
+    border-top: 15px solid #c00;
+    border-radius: 50%;
+    width: 128px;
+    height: 128px;
+    animation: featherlight-spin 2s linear infinite;
+    opacity: 0.25;
+  }
   .featherlight-content {
     background: none;
     box-shadow: none;
@@ -137,4 +146,9 @@ body.featherlight-open {
 @keyframes featherlight-fadein {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+@keyframes featherlight-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
