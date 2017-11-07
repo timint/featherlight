@@ -111,7 +111,6 @@
 		onKeyUp:        $.noop,                /* Called on key up for the frontmost featherlight */
 		onResize:       $.noop,                /* Called after new content and when a window is resized */
 		type:           null,                  /* Specify type of lightbox. If unset, it will check for the data-type attribute value or try to identify from contentFilters. */
-		openSpeed:      50,                    /* Duration of opening animation */
 		closeSpeed:     50,                    /* Duration of closing animation */
 		closeIcon:      '&#x2716;',            /* Close icon */
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
@@ -258,7 +257,7 @@
 
 					toggleGlobalEvents(true);
 
-					self.$instance.fadeIn(self.openSpeed);
+					self.$instance.show();
 					self.beforeContent(event);
 
 					/* Set content and show */

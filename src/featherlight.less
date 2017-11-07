@@ -32,6 +32,8 @@ body.featherlight-open {
   /* IE8 "hack" for nested featherlights */
   background: rgba(0, 0, 0, 0);
 
+  animation: featherlight-fadein 0.1s;
+
   * {
     box-sizing: border-box;
   }
@@ -67,6 +69,8 @@ body.featherlight-open {
 
     /* reset white-space wrapping */
     white-space: normal;
+
+    animation: featherlight-fadein 1s;
   }
 
   .featherlight-close-icon {
@@ -128,4 +132,9 @@ body.featherlight-open {
     transform: none !important;
     filter: none !important;
   }
+}
+
+@keyframes featherlight-fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
