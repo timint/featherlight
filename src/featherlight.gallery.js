@@ -23,7 +23,7 @@
 			return mc;
 		},
 		swipeAwareConstructor = isTouchAware && (jQueryConstructor || hammerConstructor);
-    
+
 	if (isTouchAware && !swipeAwareConstructor) {
 		if ('console' in window) {
 			window.console.warn('No compatible swipe library detected; one must be included before featherlightGallery for swipe motions to navigate the galleries.');
@@ -31,7 +31,7 @@
 	}
 
 	var callbackChain = {
-    
+
 		afterClose: function(_super, event) {
 				var self = this;
 				self.$instance.off('next.'+self.namespace+' previous.'+self.namespace);
@@ -43,8 +43,8 @@
 				}
 				return _super(event);
 		},
-    
-		beforeOpen: function(_super, event){
+
+		afterOpen: function(_super, event){
 			var self = this;
 
 			self.$instance.on('next.'+self.namespace+' previous.'+self.namespace, function(event){
@@ -54,20 +54,19 @@
 
 			if (swipeAwareConstructor) {
 				self._swiper = swipeAwareConstructor(self.$instance)
-					.on('swipeleft', self._swipeleft = function()  { self.$instance.trigger('next'); })
+					.on('swipeleft', self._swipeleft = function() { self.$instance.trigger('next'); })
 					.on('swiperight', self._swiperight = function() { self.$instance.trigger('previous'); });
 
 				self.$instance
 					.addClass(this.namespace+'-swipe-aware', swipeAwareConstructor);
 			}
-
 			self.$instance.find('.'+self.namespace+'-content')
 				.append(self.createNavigation('previous'))
 				.append(self.createNavigation('next'));
 
 			return _super(event);
 		},
-    
+
 		beforeContent: function(_super, event) {
 			var index = this.currentNavigation();
 			var len = this.slides().length;
@@ -76,13 +75,13 @@
 				.toggleClass(this.namespace+'-last-slide', index === len - 1);
 			return _super(event);
 		},
-      
+
 		onKeyUp: function(_super, event){
 			var dir = {
 				37: 'previous', /* Left arrow */
 				39: 'next'			/* Rigth arrow */
 			}[event.keyCode];
-			if(dir) {
+			if (dir) {
 				this.$instance.trigger(dir);
 				return false;
 			} else {
@@ -92,7 +91,7 @@
 	}
 
 	function FeatherlightGallery($source, config) {
-		if(this instanceof FeatherlightGallery) {  /* called with new */
+		if (this instanceof FeatherlightGallery) { /* called with new */
 			$.featherlight.apply(this, arguments);
 			this.chainCallbacks(callbackChain);
 		} else {
@@ -118,11 +117,6 @@
 				return this.$source.find(this.filter);
 			}
 			return this.$source;
-		},
-
-		images: function() {
-			warn('images is deprecated, please use slides instead');
-			return this.slides();
 		},
 
 		currentNavigation: function() {
