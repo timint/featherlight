@@ -292,7 +292,7 @@
 				deferred.reject();
 			} else {
 
-				if (0 === pruneOpened(self).length) {
+				if (pruneOpened(self).length === 0) {
 					toggleGlobalEvents(false);
 				}
 
