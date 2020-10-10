@@ -15,14 +15,15 @@
 <h2>General</h2>
 
 <ul>
-  <li><a href="#mybox" data-toggle="lightbox">Div Content</a></li>
-  <li><a href="#mybox-persistent" data-toggle="lightbox" data-persist=true>Div Content (Persist)</a></li>
-  <li><a href="#mybox-modal" data-toggle="lightbox" data-width="500" data-height="500">Modal in a Modal</a></li>
-  <li><a href="#" data-toggle="lightbox" data-target="This is a bunch of text" data-type="text">Text Content</a></li>
-  <li><a href="../assets/images/two_birds.jpg" data-toggle="lightbox">Image</a></li>
-  <li><a href="https://player.vimeo.com/video/33110953" data-toggle="lightbox" data-type="iframe" data-width="720" data-height="420">Video (iframe)</a></li>
-  <li><a href="demo_ajax_content.html" data-toggle="lightbox" data-type="ajax">Ajax (Full Page)</a></li>
-  <li><a href="demo_ajax_content.html .ajax-content-1" data-toggle="lightbox" data-type="ajax">Ajax (Element 1)</a> | <a href="demo_ajax_content.html .ajax-content-2" data-toggle="lightbox" data-type="ajax">Element 2</a></li>
+  <li><a href="#mybox" data-toggle="featherlight">Div Content</a></li>
+  <li><a href="#mybox-persistent" data-toggle="featherlight" data-persist=true>Div Content (Persist)</a></li>
+  <li><a href="#mybox-modal" data-toggle="featherlight" data-width="500" data-height="500">Modal in a Modal</a></li>
+  <li><a href="#" data-toggle="featherlight" data-target="This is a bunch of text" data-type="text">Text Content</a></li>
+  <li><a href="../assets/images/two_birds.jpg" data-toggle="featherlight">Image</a></li>
+  <li><a href="../assets/images/two_birds.jpg" data-toggle="featherlight" data-require-window-width="768">Image</a> (Require window width 768px or skip Featherlight - For mobile devices)</li>
+  <li><a href="https://player.vimeo.com/video/33110953" data-toggle="featherlight" data-type="iframe" data-width="720" data-height="420">Video (iframe)</a></li>
+  <li><a href="demo_ajax_content.html" data-toggle="featherlight" data-type="ajax">Ajax (Full Page)</a></li>
+  <li><a href="demo_ajax_content.html .ajax-content-1" data-toggle="featherlight" data-type="ajax">Ajax (Element 1)</a> | <a href="demo_ajax_content.html .ajax-content-2" data-toggle="featherlight" data-type="ajax">Element 2</a></li>
 </ul>
 
 <h2>Gallery</h2>
@@ -44,7 +45,7 @@
 </div>
 
 <div id="mybox-modal" style="display: none;">
-  <a href="#mybox" data-toggle="lightbox">Click here to open a modal from a modal</div>
+  <a href="#mybox" data-toggle="featherlight">Click here to open a modal from a modal</div>
 </div>
 
 <script src="../assets/javascripts/jquery-3.2.1.min.js"></script>
