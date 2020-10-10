@@ -115,6 +115,9 @@
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
 		width:          '',                    /* Specify width of lightbox. */
 		height:         '',                    /* Specify width of lightbox. */
+		maxWidth:       '',                    /* Specify max-width of lightbox. */
+		maxHeight:      '',                    /* Specify max-height of lightbox. */
+		requireWindowWidth: null,              /* Minimum scren width in pixels to enable the Featherlight. Otherwise bypass it.  */
 
 		/*** methods ***/
 		/* setup iterates over a single instance of featherlight and prepares the background and binds the events */
@@ -232,11 +235,16 @@
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
 			Returns a promise that is resolved after is successfully opened. */
 		open: function(event){
+			var self = this;
+
 			if (event && (event.ctrlKey || event.shiftKey)) {
 				return false;
 			}
 
-			var self = this;
+			if (self.requireWindowWidth && self.requireWindowWidth > $(window).width()) {
+				return false;
+			}
+
 			self.$instance.hide().appendTo(self.root);
 
 			if ((!event || !event.isDefaultPrevented())
@@ -269,6 +277,12 @@
 							}
 							if (self.height) {
 								self.$content.parent().css('height', self.height);
+							}
+							if (self.maxWidth) {
+								self.$content.parent().css('max-width', self.maxWidth);
+							}
+							if (self.maxHeight) {
+								self.$content.parent().css('max-height', self.maxHeight);
 							}
 							self.afterContent(event);
 						})
@@ -324,7 +338,7 @@
 
 	$.extend(Featherlight, {
 		id: 0,                                      /* Used to id single featherlight instances */
-		autoBind:       '[data-toggle="lightbox"]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
+		autoBind:       '[data-toggle="featherlight"]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
 		defaults:       Featherlight.prototype,     /* You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype */
 		/* Contains the logic to determine content */
 		contentFilters: {
@@ -336,7 +350,7 @@
 			},
 
 			image: {
-				regex: /\.(png|jpg|jpeg|gif|tiff?|bmp|svg)(\?\S*)?$/i,
+				regex: /\.(a?png|bmp|gif|ico|jpe?g|jp2|svg|tiff?|webp)(\?\S*)?$/i,
 				process: function(url) {
 					var self = this,
 					    deferred = $.Deferred(),
@@ -364,6 +378,7 @@
 					var self = this,
 						deferred = $.Deferred();
 					/* we are using load so one can specify a target with: url.html #targetelement */
+					url = url.replace('#', ' #');
 					var $container = $('<div></div>').load(url, function(response, status){
 						if ( status !== "error" ) {
 							deferred.resolve($container.contents());
