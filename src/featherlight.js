@@ -5,32 +5,7 @@
  * Copyright 2019, Noël Raoul Bossart (http://www.noelboss.com)
  * MIT Licensed.
 **/
-(function (factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Register as an anonymous module.
-		define(['jquery'], factory);
-	} else if (typeof module === 'object' && module.exports) {
-		// Node/CommonJS
-		module.exports = function (root, jQuery) {
-			if (jQuery === undefined) {
-				// require('jQuery') returns a factory that requires window to
-				// build a jQuery instance, we normalize how we use modules
-				// that require this pattern but the window provided is a noop
-				// if it's defined (how jquery works)
-				if (typeof window !== 'undefined') {
-					jQuery = require('jquery');
-				} else {
-					jQuery = require('jquery')(root);
-				}
-			}
-			factory(jQuery);
-			return jQuery;
-		};
-	} else {
-		// Browser globals
-		factory(jQuery);
-	}
-})(function($) {
+(function($) {
 	'use strict';
 
 	if ('undefined' === typeof $) {
@@ -244,8 +219,7 @@
 		setContent: function($content){
 			var self = this;
 
-      /* we need a special class for the iframe */
-      this.$instance.toggleClass(this.namespace+'-iframe', $content.is('iframe'));
+			self.$instance.removeClass(self.namespace+'-loading');
 
 			self.$content = $content.show();
 			self.$instance.find('.'+self.namespace+'-content').html(self.$content);
@@ -258,7 +232,7 @@
 				);
 			}
 
-      return this;
+			return self;
 		},
 
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
@@ -648,4 +622,4 @@
 
 	/* bind featherlight on ready if config autoBind is set */
 	$(document).ready(function(){ Featherlight._onReady(); });
-});
+}(jQuery));
