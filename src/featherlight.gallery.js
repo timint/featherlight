@@ -102,7 +102,7 @@
 	}
 
 	$.featherlight.extend(FeatherlightGallery, {
-		autoBind: '[data-featherlight-gallery]'
+		autoBind: '[data-toggle="featherlight"][data-gallery]'
 	});
 
 	$.extend(FeatherlightGallery.prototype, {
