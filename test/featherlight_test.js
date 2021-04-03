@@ -282,6 +282,18 @@ var stubAjaxLoad = function(content) {
 				});
 			});
 
+			it('can recover from an ajax load error, like a 404', function(done) {
+				var modal = new $.featherlight({ajax: 'bad-url-not-found.html'});
+				var p = modal.open();
+				var callbackCalled = false;
+				p.fail(function() {
+					callbackCalled = true;
+				})
+				patiently(done, function() {
+					expect(callbackCalled).to.be.true;
+				});
+			});
+
 			it('ajax content can be text only', function(done) {
 				stubAjaxLoad('Hello <b>world</b>');
 				$.featherlight({ajax: 'stubbed'});
@@ -476,6 +488,17 @@ var stubAjaxLoad = function(content) {
 				$.featherlight.close();
 				$.featherlight.close();
 				expect($('html')).not.to.have.class('with-featherlight');
+			});
+
+			it('works correctly with filters [#235]', function() {
+				var ok = false;
+				var fn = function(evt) {
+					ok = !evt.isDefaultPrevented();
+				};
+				$(document).on('click', fn);
+				$('#bug-235 .unrelated').click();
+				$(document).off('click', fn);
+				expect(ok).to.eql(true);
 			});
 
 		});

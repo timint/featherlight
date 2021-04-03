@@ -1,11 +1,36 @@
 /**
  * Featherlight - ultra slim jQuery lightbox
- * Version 1.7.9 - http://noelboss.github.io/featherlight/
+ * Version 1.7.14-UMD - http://noelboss.github.io/featherlight/
  *
- * Copyright 2017, Noël Raoul Bossart (http://www.noelboss.com)
+ * Copyright 2019, Noël Raoul Bossart (http://www.noelboss.com)
  * MIT Licensed.
 **/
-(function($) {
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD. Register as an anonymous module.
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && module.exports) {
+		// Node/CommonJS
+		module.exports = function (root, jQuery) {
+			if (jQuery === undefined) {
+				// require('jQuery') returns a factory that requires window to
+				// build a jQuery instance, we normalize how we use modules
+				// that require this pattern but the window provided is a noop
+				// if it's defined (how jquery works)
+				if (typeof window !== 'undefined') {
+					jQuery = require('jquery');
+				} else {
+					jQuery = require('jquery')(root);
+				}
+			}
+			factory(jQuery);
+			return jQuery;
+		};
+	} else {
+		// Browser globals
+		factory(jQuery);
+	}
+})(function($) {
 	'use strict';
 
 	if ('undefined' === typeof $) {
@@ -104,7 +129,7 @@
 		otherClose:     null,                  /* Selector for alternate close buttons (e.g. "a.close") */
 		beforeOpen:     $.noop,                /* Called before open. can return false to prevent opening of lightbox. Gets event as parameter, this contains all data */
 		beforeContent:  $.noop,                /* Called when content is loaded. Gets event as parameter, this contains all data */
-		beforeClose:    $.noop,                /* Called before close. can return false to prevent opening of lightbox. Gets event as parameter, this contains all data */
+		beforeClose:    $.noop,                /* Called before close. can return false to prevent closing of lightbox. Gets event as parameter, this contains all data */
 		afterOpen:      $.noop,                /* Called after open. Gets event as parameter, this contains all data */
 		afterContent:   $.noop,                /* Called after content is ready and has been set. Gets event as parameter, this contains all data */
 		afterClose:     $.noop,                /* Called after close. Gets event as parameter, this contains all data */
@@ -142,6 +167,9 @@
 
 			/* close when click on background/anywhere/null or closebox */
 			self.$instance.on(self.closeTrigger+'.'+self.namespace, function(event) {
+				if(event.isDefaultPrevented()) {
+					return;
+				}
 				var $target = $(event.target);
 				if ( ('background' === self.closeOnClick && $target.is('.'+self.namespace))
 					|| 'anywhere' === self.closeOnClick
@@ -216,7 +244,8 @@
 		setContent: function($content){
 			var self = this;
 
-			self.$instance.removeClass(self.namespace+'-loading');
+      /* we need a special class for the iframe */
+      this.$instance.toggleClass(this.namespace+'-iframe', $content.is('iframe'));
 
 			self.$content = $content.show();
 			self.$instance.find('.'+self.namespace+'-content').html(self.$content);
@@ -229,7 +258,7 @@
 				);
 			}
 
-			return self;
+      return this;
 		},
 
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
@@ -383,7 +412,7 @@
 						if ( status !== "error" ) {
 							deferred.resolve($container.contents());
 						}
-						deferred.fail();
+						deferred.reject();
 					});
 					return deferred.promise();
 				}
@@ -466,7 +495,7 @@
 			/* make a copy */
 			config = $.extend({}, config);
 
-			/* Only for openTrigger and namespace... */
+			/* Only for openTrigger, filter & namespace... */
 			var namespace = config.namespace || Klass.defaults.namespace,
 				tempConfig = $.extend({}, Klass.defaults, Klass.readElementConfig($source[0]), config),
 				sharedPersist;
@@ -492,7 +521,7 @@
 
 			$source.on(tempConfig.openTrigger+'.'+tempConfig.namespace, tempConfig.filter, handler);
 
-			return handler;
+			return {filter: tempConfig.filter, handler: handler};
 		},
 
 		current: function() {
@@ -517,8 +546,9 @@
 		_onReady: function() {
 			var Klass = this;
 			if (Klass.autoBind){
+				var $autobound = $(Klass.autoBind);
 				/* Bind existing elements */
-				$(Klass.autoBind).each(function(){
+				$autobound.each(function(){
 					Klass.attach($(this));
 				});
 				/* If a click propagates to the document level, then we have an item that was added later on */
@@ -526,10 +556,18 @@
 					if (evt.isDefaultPrevented()) {
 						return;
 					}
+					var $cur = $(evt.currentTarget);
+					var len = $autobound.length;
+					$autobound = $autobound.add($cur);
+					if(len === $autobound.length) {
+						return; /* already bound */
+					}
 					/* Bind featherlight */
-					var handler = Klass.attach($(evt.currentTarget));
+					var data = Klass.attach($cur);
 					/* Dispatch event directly */
-					handler(evt);
+					if (!data.filter || $(evt.target).parentsUntil($cur, data.filter).length > 0) {
+						data.handler(evt);
+					}
 				});
 			}
 		},
@@ -610,4 +648,4 @@
 
 	/* bind featherlight on ready if config autoBind is set */
 	$(document).ready(function(){ Featherlight._onReady(); });
-}(jQuery));
+});
