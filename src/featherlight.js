@@ -409,23 +409,15 @@
 		/*** class methods ***/
 		/* read element's attributes starting with data- */
 		readElementConfig: function(element) {
-			var config = {};
-			if (element && element.attributes) {
-				$.each(element.attributes, function(){
-					var match = this.name.match(/^data-(.*)/);
-					if (match) {
-						var val = this.value,
-							name = $.camelCase(match[1]);
-						if ($.inArray(name, ['beforeOpen', 'afterOpen', 'beforeContent', 'afterContent', 'beforeClose', 'afterClose']) >= 0) {  /* jshint -W054 */
-							val = new Function(val); /* jshint +W054 */
-						} else {
-							try { val = JSON.parse(val); }
-							catch(e) {}
-						}
-						config[name] = val;
-					}
-				});
-			}
+
+			if (!element) return;
+
+			var config = $(element).data();
+
+			$.each(this.functionAttributes, function(i, event){
+				if (config[event] !== undefined) config[event] = new Function(config[event]);
+			});
+
 			return config;
 		},
 
