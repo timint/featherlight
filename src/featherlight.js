@@ -69,18 +69,18 @@
 		if (Featherlight._globalHandlerInstalled !== newState) {
 			Featherlight._globalHandlerInstalled = newState;
 
-	    var eventMap = {keyup: 'onKeyUp', resize: 'onResize'};
+			var eventMap = {keyup: 'onKeyUp', resize: 'onResize'};
 			var events = $.map(eventMap, function(_, name) { return name+'.'+Featherlight.prototype.namespace; } ).join(' ');
 
 			$(window)[newState ? 'on' : 'off'](events, function(event) {
-        $.each(Featherlight.opened().reverse(), function() {
-          if (!event.isDefaultPrevented()) {
-            if (this[eventMap[event.type]](event) === false) {
-              event.preventDefault(); event.stopPropagation(); return false;
-            }
-          }
-        });
-      });
+				$.each(Featherlight.opened().reverse(), function() {
+					if (!event.isDefaultPrevented()) {
+						if (this[eventMap[event.type]](event) === false) {
+							event.preventDefault(); event.stopPropagation(); return false;
+						}
+					}
+				});
+			});
 		}
 	}
 
@@ -350,14 +350,15 @@
 				regex: /\.(a?png|bmp|gif|ico|jpe?g|jp2|svg|tiff?|webp)(\?\S*)?$/i,
 				process: function(url) {
 					var self = this,
-					    deferred = $.Deferred(),
-					    img = new Image(),
-					    $img = $('<img src="'+url+'" alt="" />');
+						deferred = $.Deferred(),
+						img = new Image(),
+						$img = $('<img src="'+url+'" alt="" />');
 					img.onload = function() {
 						/* Store naturalWidth & height for IE8 */
-						$img.naturalWidth = img.width; $img.naturalHeight = img.height;
-						deferred.resolve( $img );
-					};
+						$img.naturalWidth = img.width;
+						$img.naturalHeight = img.height;
+						deferred.resolve($img);
+					}
 					img.onerror = function() { deferred.reject($img); };
 					img.src = url;
 					return deferred.promise();
@@ -370,7 +371,7 @@
 			},
 
 			ajax: {
-				regex: /./,            /* At this point, any content is assumed to be an URL */
+				regex: /./, /* At this point, any content is assumed to be an URL */
 				process: function(url)  {
 					var self = this,
 						deferred = $.Deferred();
@@ -519,15 +520,17 @@
 		   Private to Featherlight.
 		*/
 		_callbackChain: {
-			onKeyUp: function(_super, event){
-				if (27 === event.keyCode) {
-					if (this.closeOnEsc) {
-						$.featherlight.close(event);
-					}
-					return false;
-				} else {
-					return _super(event);
+			onKeyUp: function(_super, event) {
+
+				switch (event.keyCode) {
+					case 27:
+						if (this.closeOnEsc) {
+							$.featherlight.close(event);
+						}
+						return false;
 				}
+
+				return _super(event);
 			},
 
 			beforeOpen: function(_super, event) {
@@ -556,14 +559,13 @@
 			},
 
 			afterClose: function(_super, event) {
-				var r = _super(event);
 
 				// Restore focus
-				var self = this;
 				this._$previouslyTabbable.removeAttr('tabindex');
 				this._$previouslyWithTabIndex.each(function(i, element) {
 					$(element).attr('tabindex', self._previousWithTabIndices[i]);
 				});
+
 				this._previouslyActive.focus();
 				return r;
 			},
