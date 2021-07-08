@@ -44,13 +44,13 @@
 	   CoffeeScript's `super`.
 	*/
 
-	function Featherlight($content, config) {
+	function Featherlight($modal, config) {
 		if (this instanceof Featherlight) {  /* called with new */
 			this.id = Featherlight.id++;
-			this.setup($content, config);
+			this.setup($modal, config);
 			this.chainCallbacks(Featherlight._callbackChain);
 		} else {
-			var fl = new Featherlight($content, config);
+			var fl = new Featherlight($modal, config);
 			fl.open();
 			return fl;
 		}
@@ -91,25 +91,25 @@
 		autoBind:       '[data-toggle="featherlight"]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
 
 		namespace:      'featherlight',        /* Name of the events and css class prefix */
-		targetAttr:     'data-target',         /* Attribute of the triggered element that contains the selector to the lightbox content */
+		targetAttr:     'data-target',         /* Attribute of the triggered element that contains the selector to the modal */
 		openTrigger:    'click',               /* Event that triggers the lightbox */
 		filter:         null,                  /* Selector to filter events. Think $(...).on('click', filter, eventHandler) */
 		closeOnClick:   'backdrop',            /* Close lightbox on click ('backdrop', 'anywhere' or false) */
 		closeOnEsc:     true,                  /* Close lightbox when pressing esc */
-		loading:        '<div class="featherlight-loader"></div>', /* Content to show while initial content is loading */
-		persist:        false,                 /* If set, the content will persist and will be shown again when opened again. 'shared' is a special value when binding multiple elements for them to share the same content */
+		loading:        '<div class="featherlight-loader"></div>', /* Content to show while initial modal is loading */
+		persist:        false,                 /* If set, the modal will persist and will be shown again when opened again. 'shared' is a special value when binding multiple elements for them to share the same modal */
 		otherClose:     null,                  /* Selector for alternate close buttons (e.g. "a.close") */
 		beforeOpen:     $.noop,                /* Called before open. can return false to prevent opening of lightbox. Gets event as parameter, this contains all data */
-		beforeContent:  $.noop,                /* Called when content is loaded. Gets event as parameter, this contains all data */
-		beforeClose:    $.noop,                /* Called before close. can return false to prevent closing of lightbox. Gets event as parameter, this contains all data */
+		beforeContent:  $.noop,                /* Called when modal is loaded. Gets event as parameter, this contains all data */
+		beforeClose:    $.noop,                /* Called before close. can return false to prevent closing the lightbox. Gets event as parameter, this contains all data */
 		afterOpen:      $.noop,                /* Called after open. Gets event as parameter, this contains all data */
-		afterContent:   $.noop,                /* Called after content is ready and has been set. Gets event as parameter, this contains all data */
+		afterContent:   $.noop,                /* Called after modal is ready and has been set. Gets event as parameter, this contains all data */
 		afterClose:     $.noop,                /* Called after close. Gets event as parameter, this contains all data */
 		onKeyUp:        $.noop,                /* Called on key up for the frontmost featherlight */
-		onResize:       $.noop,                /* Called after new content and when a window is resized */
+		onResize:       $.noop,                /* Called after new modal and when a window is resized */
 		type:           null,                  /* Specify type of lightbox. If unset, it will check for the data-type attribute value or try to identify from contentFilters. */
 		closeIcon:      '&#x2716;',            /* Close icon */
-		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the content */
+		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the modal */
 		seamless:       null,                  /* Enable or disable seamless mode. */
 		width:          '',                    /* Specify width of lightbox. */
 		height:         '',                    /* Specify width of lightbox. */
@@ -154,10 +154,10 @@
 			return this;
 		},
 
-		/* this method prepares the content and converts it into a jQuery object or a promise */
+		/* this method prepares the modal and converts it into a jQuery object or a promise */
 		getContent: function(){
-			if (this.persist !== false && this.$content) {
-				return this.$content;
+			if (this.persist !== false && this.$modal) {
+				return this.$modal;
 			}
 
 			var self = this,
@@ -212,17 +212,17 @@
 			return filter.process.call(self, data);
 		},
 
-		/* sets the content of $instance to $content */
-		setContent: function($content){
+		/* sets the content of $instance to $modal */
+		setContent: function($modal){
 			var self = this;
 
 			self.$instance.removeClass(self.namespace+'-loading');
 
-			self.$content = $content.show();
-			self.$instance.find('.'+self.namespace+'-content').html(self.$content);
+			self.$modal = $modal.show();
+			self.$instance.find('.'+self.namespace+'-modal').html(self.$modal);
 
 			if (self.closeIcon) {
-				self.$instance.find('.'+self.namespace+'-content').prepend(
+				self.$instance.find('.'+self.namespace+'-modal').prepend(
 					'<div class="'+ self.namespace +'-close-icon '+ self.namespace + '-close" aria-label="Close">' +
 						self.closeIcon +
 					'</div>'
@@ -257,9 +257,9 @@
 				if (event){
 					event.preventDefault();
 				}
-				var $content = self.getContent();
+				var $modal = self.getContent();
 
-				if ($content) {
+				if ($modal) {
 					opened.push(self);
 
 					toggleGlobalEvents(true);
@@ -267,21 +267,21 @@
 					self.$instance.show();
 					self.beforeContent(event);
 
-					/* Set content and show */
-					return $.when($content)
-						.always(function($content){
-							self.setContent($content);
+					/* Set modal and show */
+					return $.when($modal)
+						.always(function($modal){
+							self.setContent($modal);
 							if (self.width) {
-								self.$content.parent().css('width', self.width);
+								self.$modal.parent().css('width', self.width);
 							}
 							if (self.height) {
-								self.$content.parent().css('height', self.height);
+								self.$modal.parent().css('height', self.height);
 							}
 							if (self.maxWidth) {
-								self.$content.parent().css('max-width', self.maxWidth);
+								self.$modal.parent().css('max-width', self.maxWidth);
 							}
 							if (self.maxHeight) {
-								self.$content.parent().css('max-height', self.maxHeight);
+								self.$modal.parent().css('max-height', self.maxHeight);
 							}
 							self.afterContent(event);
 						})
@@ -391,13 +391,13 @@
 			iframe: {
 				process: function(url) {
 					var deferred = new $.Deferred();
-					var $content = $('<iframe/>');
-					$content.hide()
+					var $modal = $('<iframe/>');
+					$modal.hide()
 						.attr('src', url)
-						.on('load', function() { deferred.resolve($content.show()); })
+						.on('load', function() { deferred.resolve($modal.show()); })
 						// We can't move an <iframe> and avoid reloading it,
 						// so let's put it in place ourselves right now:
-						.appendTo(this.$instance.find('.' + this.namespace + '-content'));
+						.appendTo(this.$instance.find('.' + this.namespace + '-modal'));
 					return deferred.promise();
 				}
 			},
@@ -422,11 +422,11 @@
 			return config;
 		},
 
-		attach: function($source, $content, config) {
+		attach: function($source, $modal, config) {
 			var self = this;
-			if (typeof $content === 'object' && $content instanceof $ === false && !config) {
-				config = $content;
-				$content = undefined;
+			if (typeof $modal === 'object' && $modal instanceof $ === false && !config) {
+				config = $modal;
+				$modal = undefined;
 			}
 			/* make a copy */
 			config = $.extend({}, config);
@@ -444,7 +444,7 @@
 					self.readElementConfig($source[0]),
 					self.readElementConfig(this),
 					config);
-				var fl = sharedPersist || $target.data('featherlight-persisted') || new self($content, elementConfig);
+				var fl = sharedPersist || $target.data('featherlight-persisted') || new self($modal, elementConfig);
 				if (fl.persist === 'shared') {
 					sharedPersist = fl;
 				} else if (fl.persist !== false) {
@@ -579,8 +579,8 @@
 	$.featherlight = Featherlight;
 
 	/* bind jQuery elements to trigger featherlight */
-	$.fn.featherlight = function($content, config) {
-		Featherlight.attach(this, $content, config);
+	$.fn.featherlight = function($modal, config) {
+		Featherlight.attach(this, $modal, config);
 		return this;
 	};
 
