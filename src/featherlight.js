@@ -1,6 +1,6 @@
 /**
  * Featherlight - ultra slim jQuery lightbox
- * Version 1.7.14-UMD - http://noelboss.github.io/featherlight/
+ * Version 1.7.14 - http://noelboss.github.io/featherlight/
  *
  * Copyright 2019, Noël Raoul Bossart (http://www.noelboss.com)
  * MIT Licensed.
@@ -145,9 +145,9 @@
 					case (self.closeOnClick === 'backdrop' && $(event.target).is('.'+self.namespace)):
 					case (self.closeOnClick === 'anywhere'):
 					case ($(event.target).is('.'+self.namespace+'-close' + (self.otherClose ? ',' + self.otherClose : ''))):
-					self.close(event);
-					event.preventDefault();
-					break;
+						self.close(event);
+						event.preventDefault();
+						break;
 				}
 			});
 
@@ -413,9 +413,10 @@
 
 			if (!element) return;
 
-			var config = $(element).data();
+			var config = $(element).data(),
+				functionAttributes = ['beforeOpen', 'afterOpen', 'beforeContent', 'afterContent', 'beforeClose', 'afterClose'];
 
-			$.each(this.functionAttributes, function(i, event){
+			$.each(functionAttributes, function(i, event){
 				if (config[event] !== undefined) config[event] = new Function(config[event]);
 			});
 
@@ -526,6 +527,11 @@
 				return _super(event);
 			},
 
+
+			onResize: function(_super, event){
+				return _super(event);
+			}
+
 			beforeOpen: function(_super, event) {
 
 				// Remember focus:
@@ -560,18 +566,10 @@
 				});
 
 				this._previouslyActive.focus();
-				return r;
-			},
 
-			onResize: function(_super, event){
+				this.$instance.off('next.'+this.namespace+' previous.'+this.namespace);
+
 				return _super(event);
-			},
-
-			afterContent: function(_super, event){
-				var r = _super(event);
-				this.$instance.find('[autofocus]:not([disabled])').focus();
-				this.onResize(event);
-				return r;
 			}
 		}
 	});

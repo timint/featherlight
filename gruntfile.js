@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 
 		replace: {
 			src: {
-				src: ['./README.md','./src/*.*','bower.json'],
+				src: ['./README.md','./src/*.*'],
 				overwrite: true,
 				replacements: [
 					{
