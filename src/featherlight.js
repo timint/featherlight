@@ -72,11 +72,11 @@
 			var eventMap = {keyup: 'onKeyUp', resize: 'onResize'};
 			var events = $.map(eventMap, function(_, name) { return name+'.featherlight'; } ).join(' ');
 
-			$(window)[newState ? 'on' : 'off'](events, function(event) {
+			$(window)[newState ? 'on' : 'off'](events, function(e) {
 				$.each(Featherlight.opened().reverse(), function() {
-					if (!event.isDefaultPrevented()) {
-						if (this[eventMap[event.type]](event) === false) {
-							event.preventDefault(); event.stopPropagation(); return false;
+					if (!e.isDefaultPrevented()) {
+						if (this[eventMap[e.type]](e) === false) {
+							e.preventDefault(); e.stopPropagation(); return false;
 						}
 					}
 				});
@@ -135,16 +135,16 @@
 			].join(''));
 
 			// close when click on backdrop/anywhere/null or closebox
-			self.$instance.on('click.featherlight', function(event) {
-				if (event.isDefaultPrevented()) {
+			self.$instance.on('click.featherlight', function(e) {
+				if (e.isDefaultPrevented()) {
 					return;
 				}
 				switch (true) {
-					case (self.closeOnClick === 'backdrop' && $(event.target).is('.featherlight')):
+					case (self.closeOnClick === 'backdrop' && $(e.target).is('.featherlight')):
 					case (self.closeOnClick === 'anywhere'):
-					case ($(event.target).is('.featherlight-close' + (self.otherClose ? ',' + self.otherClose : ''))):
-						self.close(event);
-						event.preventDefault();
+					case ($(e.target).is('.featherlight-close' + (self.otherClose ? ',' + self.otherClose : ''))):
+						self.close(e);
+						e.preventDefault();
 						break;
 				}
 			});
@@ -232,10 +232,10 @@
 
 		/* opens the lightbox. "this" contains $instance with the lightbox, and with the config.
 			Returns a promise that is resolved after is successfully opened. */
-		open: function(event){
+		open: function(e){
 			var self = this;
 
-			if (event && (event.ctrlKey || event.shiftKey)) {
+			if (e && (e.ctrlKey || e.shiftKey)) {
 				return false;
 			}
 
@@ -245,16 +245,15 @@
 
 			self.$instance.hide().appendTo('body');
 
-			if ((!event || !event.isDefaultPrevented()) && self.beforeOpen(event) !== false) {
+			if ((!e || !e.isDefaultPrevented()) && self.beforeOpen(e) !== false) {
+
+        if (e) e.preventDefault();
 
 				$('body').addClass('featherlight-open');
 
 				$('.featherlight').removeClass('active');
 				self.$instance.addClass('active');
 
-				if (event){
-					event.preventDefault();
-				}
 				var $modal = self.getContent();
 
 				if ($modal) {
@@ -263,7 +262,7 @@
 					toggleGlobalEvents(true);
 
 					self.$instance.show();
-					self.beforeContent(event);
+					self.beforeContent(e);
 
 					// Set modal and show
 					return $.when($modal)
@@ -281,11 +280,11 @@
 							if (self.maxHeight) {
 								self.$modal.parent().css('max-height', self.maxHeight);
 							}
-							self.afterContent(event);
+							self.afterContent(e);
 						})
 						.then(self.$instance.promise())
 						// Call afterOpen after show() is done
-						.done(function(){ self.afterOpen(event); });
+						.done(function(){ self.afterOpen(e); });
 				}
 			}
 			self.$instance.detach();
@@ -294,11 +293,11 @@
 
 		/* closes the lightbox. "this" contains $instance with the lightbox, and with the config
 			returns a promise, resolved after the lightbox is successfully closed. */
-		close: function(event){
+		close: function(e){
 			var self = this,
 				deferred = $.Deferred();
 
-			if (self.beforeClose(event) === false) {
+			if (self.beforeClose(e) === false) {
 				deferred.reject();
 			} else {
 
@@ -307,7 +306,7 @@
 				}
 
 				self.$instance.hide().detach();
-				self.afterClose(event);
+				self.afterClose(e);
 				deferred.resolve();
 
 				$('.featherlight:not(.active)').filter(':last').addClass('active');
@@ -434,8 +433,8 @@
 			var tempConfig = $.extend({}, self.defaults, self.readElementConfig($source[0]), config),
 				sharedPersist;
 
-			var handler = function(event) {
-				var $target = $(event.currentTarget);
+			var handler = function(e) {
+				var $target = $(e.currentTarget);
 				// ... since we might as well compute the config on the actual target
 				var elementConfig = $.extend(
 					{$source: $source, $currentTarget: $target},
@@ -451,7 +450,7 @@
 				if (elementConfig.$currentTarget.blur) {
 					elementConfig.$currentTarget.blur(); // Otherwise 'enter' key might trigger the dialog again
 				}
-				fl.open(event);
+				fl.open(e);
 			};
 
 			$source.on(tempConfig.openTrigger+'.featherlight', tempConfig.filter, handler);
@@ -470,9 +469,9 @@
 			return $.grep(opened, function(fl) { return fl instanceof self; } );
 		},
 
-		close: function(event) {
+		close: function(e) {
 			var cur = this.current();
-			if (cur) { return cur.close(event); }
+			if (cur) { return cur.close(e); }
 		},
 
 		/* Does the auto binding on startup.
@@ -487,11 +486,11 @@
 					self.attach($(this));
 				});
 				// If a click propagates to the document level, then we have an item that was added later on
-				$(document).on('click', self.autoBind, function(event) {
-					if (event.isDefaultPrevented()) {
+				$(document).on('click', self.autoBind, function(e) {
+					if (e.isDefaultPrevented()) {
 						return;
 					}
-					var $cur = $(event.currentTarget);
+					var $cur = $(e.currentTarget);
 					var len = $autobound.length;
 					$autobound = $autobound.add($cur);
 					if(len === $autobound.length) {
@@ -500,8 +499,8 @@
 					// Bind featherlight
 					var data = self.attach($cur);
 					// Dispatch event directly
-					if (!data.filter || $(event.target).parentsUntil($cur, data.filter).length > 0) {
-						data.handler(event);
+					if (!data.filter || $(e.target).parentsUntil($cur, data.filter).length > 0) {
+						data.handler(e);
 					}
 				});
 			}
@@ -511,25 +510,25 @@
 		   Private to Featherlight.
 		*/
 		_callbackChain: {
-			onKeyUp: function(_super, event) {
+			onKeyUp: function(_super, e){
 
-				switch (event.keyCode) {
+				switch (e.keyCode) {
 					case 27:
 						if (this.closeOnEsc) {
-							$.featherlight.close(event);
+							$.featherlight.close(e);
 						}
 						return false;
 				}
 
-				return _super(event);
+				return _super(e);
 			},
 
 
-			onResize: function(_super, event){
-				return _super(event);
+			onResize: function(_super, e){
+				return _super(e);
 			},
 
-			beforeOpen: function(_super, event) {
+			beforeOpen: function(_super, e) {
 
 				// Remember focus:
 				this._previouslyActive = document.activeElement;
@@ -551,10 +550,10 @@
 					document.activeElement.blur();
 				}
 
-				return _super(event);
+				return _super(e);
 			},
 
-			afterClose: function(_super, event) {
+			afterOpen: function(_super, e){
 
 				var self = this;
 
@@ -568,7 +567,7 @@
 
 				this.$instance.off('next.featherlight previous.featherlight');
 
-				return _super(event);
+				return _super(e);
 			}
 		}
 	});
