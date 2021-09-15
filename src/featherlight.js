@@ -127,7 +127,7 @@
 			var self = $.extend(this, config, {target: target});
 
 			self.$instance = $([
-				'<div class="featherlight featherlight-loading">',
+				'<div class="featherlight featherlight-backdrop featherlight-loading">',
 					'<div class="featherlight-modal'+ ((typeof self.seamless !== 'undefined') ? ' featherlight-seamless' : '') +'">',
 						'<div class="featherlight-inner">'+ self.loading +'</div>',
 					'</div>',

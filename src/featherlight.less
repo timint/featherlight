@@ -16,7 +16,6 @@ body.featherlight-open {
 	padding-right: 15px;
 
 	> *:not(.featherlight):not(#animated-cart-item) {
-		/* blur backdrop */
 		filter: blur(@blur-size);
 	}
 }
@@ -32,7 +31,6 @@ body.featherlight-open {
 	white-space: nowrap;
 
 	cursor: pointer;
-	background: #333;
 
 	animation: featherlight-fadein 0.1s linear;
 
@@ -42,7 +40,6 @@ body.featherlight-open {
 
 	/* support for nested featherlights. Does not work in IE8 (use JS to fix) */
 	&.active {
-		background: rgba(0, 0, 0, 0.5);
 	}
 
 	&:before {
@@ -52,6 +49,10 @@ body.featherlight-open {
 		height: 100%;
 		vertical-align: middle;
 	}
+
+  &.featherlight-backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
 
 	.featherlight-modal {
 		position: relative;
