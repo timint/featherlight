@@ -1,0 +1,11 @@
+# EditorConfig: https://EditorConfig.org
+# Notepad++ Plugin: https://github.com/editorconfig/editorconfig-notepad-plus-plus
+# Visual Studio Code Plugin: https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
+
+root = true
+
+[*.{css,html,js,json,less,php,scss,xml}]
+charset = utf-8
+indent_style = tab
+indent_size = 2
+trim_trailing_whitespace = true
