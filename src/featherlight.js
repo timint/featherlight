@@ -132,7 +132,7 @@
 						'<div class="featherlight-inner">'+ self.loading +'</div>',
 					'</div>',
 				'</div>'
-			].join());
+			].join(''));
 
 			// close when click on backdrop/anywhere/null or closebox
 			self.$instance.on('click.featherlight', function(event) {
@@ -224,7 +224,7 @@
 					'<div class="featherlight-close-icon featherlight-close">',
 						self.closeIcon,
 					'</div>'
-				].join());
+				].join(''));
 			}
 
 			return self;
