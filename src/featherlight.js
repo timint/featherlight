@@ -70,7 +70,7 @@
 			Featherlight._globalHandlerInstalled = newState;
 
 			var eventMap = {keyup: 'onKeyUp', resize: 'onResize'};
-			var events = $.map(eventMap, function(_, name) { return name+'.'+Featherlight.prototype.namespace; } ).join(' ');
+			var events = $.map(eventMap, function(_, name) { return name+'.featherlight'; } ).join(' ');
 
 			$(window)[newState ? 'on' : 'off'](events, function(event) {
 				$.each(Featherlight.opened().reverse(), function() {
@@ -89,8 +89,6 @@
 		/*** defaults ***/
 		/* extend featherlight with defaults and methods */
 		autoBind:       '[data-toggle="featherlight"]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
-
-		namespace:      'featherlight',        /* Name of the events and css class prefix */
 		targetAttr:     'data-target',         /* Attribute of the triggered element that contains the selector to the modal */
 		openTrigger:    'click',               /* Event that triggers the lightbox */
 		filter:         null,                  /* Selector to filter events. Think $(...).on('click', filter, eventHandler) */
@@ -129,22 +127,22 @@
 			var self = $.extend(this, config, {target: target});
 
 			self.$instance = $([
-				'<div class="'+self.namespace+' '+self.namespace+'-loading">',
-					'<div class="'+self.namespace+'-modal'+ ((typeof self.seamless !== 'undefined') ? ' featherlight-seamless' : '') +'">',
-						'<div class="'+self.namespace+'-inner">'+self.loading+'</div>',
+				'<div class="featherlight featherlight-loading">',
+					'<div class="featherlight-modal'+ ((typeof self.seamless !== 'undefined') ? ' featherlight-seamless' : '') +'">',
+						'<div class="featherlight-inner">'+self.loading+'</div>',
 					'</div>',
 				'</div>'
 			].join());
 
 			/* close when click on backdrop/anywhere/null or closebox */
-			self.$instance.on('click.'+self.namespace, function(event) {
+			self.$instance.on('click.featherlight', function(event) {
 				if (event.isDefaultPrevented()) {
 					return;
 				}
 				switch (true) {
-					case (self.closeOnClick === 'backdrop' && $(event.target).is('.'+self.namespace)):
+					case (self.closeOnClick === 'backdrop' && $(event.target).is('.featherlight')):
 					case (self.closeOnClick === 'anywhere'):
-					case ($(event.target).is('.'+self.namespace+'-close' + (self.otherClose ? ',' + self.otherClose : ''))):
+					case ($(event.target).is('.featherlight-close' + (self.otherClose ? ',' + self.otherClose : ''))):
 						self.close(event);
 						event.preventDefault();
 						break;
@@ -216,17 +214,17 @@
 		setContent: function($modal){
 			var self = this;
 
-			self.$instance.removeClass(self.namespace+'-loading');
+			self.$instance.removeClass('featherlight-loading');
 
 			self.$modal = $modal.show();
-			self.$instance.find('.'+self.namespace+'-modal').html(self.$modal);
+			self.$instance.find('.featherlight-modal').html(self.$modal);
 
 			if (self.closeIcon) {
-				self.$instance.find('.'+self.namespace+'-modal').prepend(
-					'<div class="'+ self.namespace +'-close-icon '+ self.namespace + '-close" aria-label="Close">' +
-						self.closeIcon +
+				self.$instance.find('.featherlight-modal').prepend([
+					'<div class="featherlight-close-icon featherlight-close">',
+						self.closeIcon,
 					'</div>'
-				);
+				].join());
 			}
 
 			return self;
@@ -397,7 +395,7 @@
 						.on('load', function() { deferred.resolve($modal.show()); })
 						// We can't move an <iframe> and avoid reloading it,
 						// so let's put it in place ourselves right now:
-						.appendTo(this.$instance.find('.' + this.namespace + '-modal'));
+						.appendTo(this.$instance.find('.featherlight-modal'));
 					return deferred.promise();
 				}
 			},
@@ -432,9 +430,8 @@
 			/* make a copy */
 			config = $.extend({}, config);
 
-			/* Only for openTrigger, filter & namespace... */
-			var namespace = config.namespace || self.defaults.namespace,
-				tempConfig = $.extend({}, self.defaults, self.readElementConfig($source[0]), config),
+			/* Only for openTrigger, & filter... */
+			var tempConfig = $.extend({}, self.defaults, self.readElementConfig($source[0]), config),
 				sharedPersist;
 
 			var handler = function(event) {
@@ -457,7 +454,7 @@
 				fl.open(event);
 			};
 
-			$source.on(tempConfig.openTrigger+'.'+tempConfig.namespace, tempConfig.filter, handler);
+			$source.on(tempConfig.openTrigger+'.featherlight', tempConfig.filter, handler);
 
 			return {filter: tempConfig.filter, handler: handler};
 		},
@@ -567,7 +564,7 @@
 
 				this._previouslyActive.focus();
 
-				this.$instance.off('next.'+this.namespace+' previous.'+this.namespace);
+				this.$instance.off('next.featherlight previous.featherlight');
 
 				return _super(event);
 			}
