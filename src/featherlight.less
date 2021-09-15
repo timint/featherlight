@@ -11,149 +11,149 @@
 @border-radius: 4px;
 
 body.featherlight-open {
-  /* prevent scrolling */
-  overflow: hidden;
-  padding-right: 15px;
+	/* prevent scrolling */
+	overflow: hidden;
+	padding-right: 15px;
 
-  > *:not(.featherlight):not(#animated-cart-item) {
-    /* blur backdrop */
-    filter: blur(@blur-size);
-  }
+	> *:not(.featherlight):not(#animated-cart-item) {
+		/* blur backdrop */
+		filter: blur(@blur-size);
+	}
 }
 
 .featherlight {
-  display: none;
-  position: fixed;
-  top: 0; right: 0; bottom: 0; left: 0;
-  overflow-y: auto;
+	display: none;
+	position: fixed;
+	top: 0; right: 0; bottom: 0; left: 0;
+	overflow-y: auto;
 
-  text-align: center;
-  /* insures that the ::before pseudo element doesn't force wrap with fixed width content; */
-  white-space: nowrap;
+	text-align: center;
+	/* insures that the ::before pseudo element doesn't force wrap with fixed width content; */
+	white-space: nowrap;
 
-  cursor: pointer;
-  background: #333;
+	cursor: pointer;
+	background: #333;
 
-  animation: featherlight-fadein 0.1s linear;
+	animation: featherlight-fadein 0.1s linear;
 
-  * {
-    box-sizing: border-box;
-  }
+	* {
+		box-sizing: border-box;
+	}
 
-  /* support for nested featherlights. Does not work in IE8 (use JS to fix) */
-  &.active {
-    background: rgba(0, 0, 0, 0.5);
-  }
+	/* support for nested featherlights. Does not work in IE8 (use JS to fix) */
+	&.active {
+		background: rgba(0, 0, 0, 0.5);
+	}
 
-  &:before {
-    /* position: trick to center content vertically */
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
+	&:before {
+		/* position: trick to center content vertically */
+		content: '';
+		display: inline-block;
+		height: 100%;
+		vertical-align: middle;
+	}
 
-  .featherlight-modal {
-    position: relative;
+	.featherlight-modal {
+		position: relative;
 
-    /* position: centering vertical and horizontal */
-    text-align: left;
-    vertical-align: middle;
-    display: inline-block;
+		/* position: centering vertical and horizontal */
+		text-align: left;
+		vertical-align: middle;
+		display: inline-block;
 
-    margin: @gutter-size;
+		margin: @gutter-size;
 
-    cursor: auto;
-    box-shadow: 0 5px @gutter-size rgba(0,0,0,0.25);
-    border-radius: @border-radius;
+		cursor: auto;
+		box-shadow: 0 5px @gutter-size rgba(0,0,0,0.25);
+		border-radius: @border-radius;
 
-    /* reset white-space wrapping */
-    white-space: normal;
+		/* reset white-space wrapping */
+		white-space: normal;
 
-    animation: featherlight-fadein 0.5s linear;
+		animation: featherlight-fadein 0.5s linear;
 
-    &:not(.featherlight-seamless) {
-      padding: @gutter-size;
-      background: #fff;
-    }
+		&:not(.featherlight-seamless) {
+			padding: @gutter-size;
+			background: #fff;
+		}
 
-    &.featherlight-seamless > * {
-      margin: 0 !important;
-    }
-  }
+		&.featherlight-seamless > * {
+			margin: 0 !important;
+		}
+	}
 
-  .featherlight-close-icon {
-    position: absolute;
-    top: -.75em;
-    right: -.75em;
-    z-index: 9999;
+	.featherlight-close-icon {
+		position: absolute;
+		top: -.75em;
+		right: -.75em;
+		z-index: 9999;
 
-    width: 2em;
-    line-height: 2em;
+		width: 2em;
+		line-height: 2em;
 
-    background: #c00;
-    border-radius: @border-radius;
-    border: none;
-    color: #fff;
-    font-weight: bold;
+		background: #c00;
+		border-radius: @border-radius;
+		border: none;
+		color: #fff;
+		font-weight: bold;
 
-    cursor: pointer;
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
+		cursor: pointer;
+		text-align: center;
+		font-family: Arial, sans-serif;
+	}
 
-  .featherlight-modal > img {
-    max-width: 100%;
-    max-height: 100%;
-  }
+	.featherlight-modal > img {
+		max-width: 100%;
+		max-height: 100%;
+	}
 
-  .featherlight-modal > iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
+	.featherlight-modal > iframe {
+		width: 100%;
+		height: 100%;
+		border: none;
+	}
 }
 
 .featherlight-loading {
-  .featherlight-loader {
-    border: @gutter-size solid #f3f3f3;
-    border-top: @gutter-size solid #c00;
-    border-radius: 50%;
-    width: 128px;
-    height: 128px;
-    animation: featherlight-spin 2s linear infinite;
-    opacity: 0.25;
-  }
-  .featherlight-modal {
-    background: none;
-    box-shadow: none;
-  }
+	.featherlight-loader {
+		border: @gutter-size solid #f3f3f3;
+		border-top: @gutter-size solid #c00;
+		border-radius: 50%;
+		width: 128px;
+		height: 128px;
+		animation: featherlight-spin 2s linear infinite;
+		opacity: 0.25;
+	}
+	.featherlight-modal {
+		background: none;
+		box-shadow: none;
+	}
 }
 
 /* Stacked modals */
 .featherlight {
-   perspective: 2048px;
+	 perspective: 2048px;
 
-  .featherlight-modal {
-    transition: transform 0.25s linear, filter 0.25s linear;
-    transform: -400px;
-    transform: scale(0.8) rotateY(45deg) translateZ(-400px);
-    transform-style: preserve-3d;
-    filter: blur(@blur-size/2);
-  }
+	.featherlight-modal {
+		transition: transform 0.25s linear, filter 0.25s linear;
+		transform: -400px;
+		transform: scale(0.8) rotateY(45deg) translateZ(-400px);
+		transform-style: preserve-3d;
+		filter: blur(@blur-size/2);
+	}
 
-  &.active .featherlight-modal {
-    transform: none !important;
-    filter: none !important;
-  }
+	&.active .featherlight-modal {
+		transform: none !important;
+		filter: none !important;
+	}
 }
 
 @keyframes featherlight-fadein {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+	from { opacity: 0; }
+	to   { opacity: 1; }
 }
 
 @keyframes featherlight-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
 }
