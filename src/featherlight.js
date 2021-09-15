@@ -87,38 +87,38 @@
 	Featherlight.prototype = {
 		constructor: Featherlight,
 		/*** defaults ***/
-		/* extend featherlight with defaults and methods */
-		autoBind:       '[data-toggle="featherlight"]', /* Will automatically bind elements matching this selector. Clear or set before onReady */
-		targetAttr:     'data-target',         /* Attribute of the triggered element that contains the selector to the modal */
-		openTrigger:    'click',               /* Event that triggers the lightbox */
-		filter:         null,                  /* Selector to filter events. Think $(...).on('click', filter, eventHandler) */
-		closeOnClick:   'backdrop',            /* Close lightbox on click ('backdrop', 'anywhere' or false) */
-		closeOnEsc:     true,                  /* Close lightbox when pressing esc */
-		loading:        '<div class="featherlight-loader"></div>', /* Content to show while initial modal is loading */
-		persist:        false,                 /* If set, the modal will persist and will be shown again when opened again. 'shared' is a special value when binding multiple elements for them to share the same modal */
-		otherClose:     null,                  /* Selector for alternate close buttons (e.g. "a.close") */
-		beforeOpen:     $.noop,                /* Called before open. can return false to prevent opening of lightbox. Gets event as parameter, this contains all data */
-		beforeContent:  $.noop,                /* Called when modal is loaded. Gets event as parameter, this contains all data */
-		beforeClose:    $.noop,                /* Called before close. can return false to prevent closing the lightbox. Gets event as parameter, this contains all data */
-		afterOpen:      $.noop,                /* Called after open. Gets event as parameter, this contains all data */
-		afterContent:   $.noop,                /* Called after modal is ready and has been set. Gets event as parameter, this contains all data */
-		afterClose:     $.noop,                /* Called after close. Gets event as parameter, this contains all data */
-		onKeyUp:        $.noop,                /* Called on key up for the frontmost featherlight */
-		onResize:       $.noop,                /* Called after new modal and when a window is resized */
-		type:           null,                  /* Specify type of lightbox. If unset, it will check for the data-type attribute value or try to identify from contentFilters. */
-		closeIcon:      '&#x2716;',            /* Close icon */
+		// extend featherlight with defaults and methods
+		autoBind:       '[data-toggle="featherlight"]', // Will automatically bind elements matching this selector. Clear or set before onReady
+		targetAttr:     'data-target',         // Attribute of the triggered element that contains the selector to the modal
+		openTrigger:    'click',               // Event that triggers the lightbox
+		filter:         null,                  // Selector to filter events. Think $(...).on('click', filter, eventHandler)
+		closeOnClick:   'backdrop',            // Close lightbox on click ('backdrop', 'anywhere' or false)
+		closeOnEsc:     true,                  // Close lightbox when pressing esc
+		loading:        '<div class="featherlight-loader"></div>', // Content to show while initial modal is loading
+		persist:        false,                 // If set, the modal will persist and will be shown again when opened again. 'shared' is a special value when binding multiple elements for them to share the same modal
+		otherClose:     null,                  // Selector for alternate close buttons (e.g. "a.close")
+		beforeOpen:     $.noop,                // Called before open. can return false to prevent opening of lightbox. Gets event as parameter, this contains all data
+		beforeContent:  $.noop,                // Called when modal is loaded. Gets event as parameter, this contains all data
+		beforeClose:    $.noop,                // Called before close. can return false to prevent closing the lightbox. Gets event as parameter, this contains all data
+		afterOpen:      $.noop,                // Called after open. Gets event as parameter, this contains all data
+		afterContent:   $.noop,                // Called after modal is ready and has been set. Gets event as parameter, this contains all data
+		afterClose:     $.noop,                // Called after close. Gets event as parameter, this contains all data
+		onKeyUp:        $.noop,                // Called on key up for the frontmost featherlight
+		onResize:       $.noop,                // Called after new modal and when a window is resized
+		type:           null,                  // Specify type of lightbox. If unset, it will check for the data-type attribute value or try to identify from contentFilters.
+		closeIcon:      '&#x2716;',            // Close icon */
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the modal */
-		seamless:       null,                  /* Enable or disable seamless mode. */
-		width:          '',                    /* Specify width of lightbox. */
-		height:         '',                    /* Specify width of lightbox. */
-		maxWidth:       '',                    /* Specify max-width of lightbox. */
-		maxHeight:      '',                    /* Specify max-height of lightbox. */
-		requireWindowWidth: null,              /* Minimum scren width in pixels to enable the Featherlight. Otherwise bypass it.  */
+		seamless:       null,                 // Enable or disable seamless mode.
+		width:          '',                    // Specify width of lightbox.
+		height:         '',                    // Specify width of lightbox.
+		maxWidth:       '',                    // Specify max-width of lightbox.
+		maxHeight:      '',                    // Specify max-height of lightbox.
+		requireWindowWidth: null,              // Minimum scren width in pixels to enable the Featherlight. Otherwise bypass it.  */
 
 		/*** methods ***/
-		/* setup iterates over a single instance of featherlight and prepares the backdrop and binds the events */
+		// setup iterates over a single instance of featherlight and prepares the backdrop and binds the events
 		setup: function(target, config){
-			/* all arguments are optional */
+			// all arguments are optional
 			if (typeof target === 'object' && target instanceof $ === false && !config) {
 				config = target;
 				target = undefined;
@@ -129,12 +129,12 @@
 			self.$instance = $([
 				'<div class="featherlight featherlight-loading">',
 					'<div class="featherlight-modal'+ ((typeof self.seamless !== 'undefined') ? ' featherlight-seamless' : '') +'">',
-						'<div class="featherlight-inner">'+self.loading+'</div>',
+						'<div class="featherlight-inner">'+ self.loading +'</div>',
 					'</div>',
 				'</div>'
 			].join());
 
-			/* close when click on backdrop/anywhere/null or closebox */
+			// close when click on backdrop/anywhere/null or closebox
 			self.$instance.on('click.featherlight', function(event) {
 				if (event.isDefaultPrevented()) {
 					return;
@@ -152,7 +152,7 @@
 			return this;
 		},
 
-		/* this method prepares the modal and converts it into a jQuery object or a promise */
+		// this method prepares the modal and converts it into a jQuery object or a promise
 		getContent: function(){
 			if (this.persist !== false && this.$modal) {
 				return this.$modal;
@@ -164,17 +164,17 @@
 				targetValue = readTargetAttr(self.targetAttr),
 				data = self.target || targetValue || '';
 
-			/* Find which filter applies */
-			var filter = filters[self.type]; /* check explicit type like {type: 'image'} */
+			// Find which filter applies
+			var filter = filters[self.type]; // check explicit type like {type: 'image'}
 
-			/* check explicit type like data-target="image" */
+			// check explicit type like data-target="image"
 			if (!filter && data in filters) {
 				filter = filters[data];
 				data = self.target && targetValue;
 			}
 			data = data || readTargetAttr('href') || '';
 
-			/* check explicity type & content like {image: 'photo.jpg'} */
+			// check explicity type & content like {image: 'photo.jpg'}
 			if (!filter) {
 				for (var filterName in filters) {
 					if (self[filterName]) {
@@ -184,7 +184,7 @@
 				}
 			}
 
-			/* otherwise it's implicit, run checks */
+			// otherwise it's implicit, run checks
 			if (!filter) {
 				var target = data;
 				data = null;
@@ -206,11 +206,11 @@
 					return false;
 				}
 			}
-			/* Process it */
+			// Process it
 			return filter.process.call(self, data);
 		},
 
-		/* sets the content of $instance to $modal */
+		// sets the content of $instance to $modal
 		setContent: function($modal){
 			var self = this;
 
@@ -265,7 +265,7 @@
 					self.$instance.show();
 					self.beforeContent(event);
 
-					/* Set modal and show */
+					// Set modal and show
 					return $.when($modal)
 						.always(function($modal){
 							self.setContent($modal);
@@ -284,7 +284,7 @@
 							self.afterContent(event);
 						})
 						.then(self.$instance.promise())
-						/* Call afterOpen after show() is done */
+						// Call afterOpen after show() is done
 						.done(function(){ self.afterOpen(event); });
 				}
 			}
@@ -334,13 +334,13 @@
 	};
 
 	$.extend(Featherlight, {
-		id: 0,                                      /* Used to id single featherlight instances */
-		defaults:       Featherlight.prototype,     /* You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype */
-		/* Contains the logic to determine content */
+		id: 0,                                      // Used to id single featherlight instances
+		defaults:       Featherlight.prototype,     // You can access and override all defaults using $.featherlight.defaults, which is just a synonym for $.featherlight.prototype
+		// Contains the logic to determine content
 		contentFilters: {
 
 			jquery: {
-				regex: /^[#.]\w/,         /* Anything that starts with a class name or identifiers */
+				regex: /^[#.]\w/,         // Anything that starts with a class name or identifiers
 				test: function(element)    { return element instanceof $ && element; },
 				process: function(element) { return this.persist !== false ? $(element) : $(element).clone(true); }
 			},
@@ -353,7 +353,7 @@
 						img = new Image(),
 						$img = $('<img src="'+url+'" alt="" />');
 					img.onload = function() {
-						/* Store naturalWidth & height for IE8 */
+						// Store naturalWidth & height for IE8
 						$img.naturalWidth = img.width;
 						$img.naturalHeight = img.height;
 						deferred.resolve($img);
@@ -365,19 +365,19 @@
 			},
 
 			html: {
-				regex: /^\s*<[\w!][^<]*>/, /* Anything that starts with some kind of valid tag */
+				regex: /^\s*<[\w!][^<]*>/, // Anything that starts with some kind of valid tag
 				process: function(html) { return $(html); }
 			},
 
 			ajax: {
-				regex: /./, /* At this point, any content is assumed to be an URL */
+				regex: /./, // At this point, any content is assumed to be an URL
 				process: function(url)  {
 					var self = this,
 						deferred = $.Deferred();
-					/* we are using load so one can specify a target with: url.html #targetelement */
+					// we are using load so one can specify a target with: url.html #targetelement
 					url = url.replace('#', ' #');
 					var $container = $('<div></div>').load(url, function(response, status){
-						if ( status !== "error" ) {
+						if (status !== 'error') {
 							deferred.resolve($container.contents());
 						}
 						deferred.reject();
@@ -406,7 +406,7 @@
 		},
 
 		/*** class methods ***/
-		/* read element's attributes starting with data- */
+		// read element's attributes starting with data-
 		readElementConfig: function(element) {
 
 			if (!element) return;
@@ -427,16 +427,16 @@
 				config = $modal;
 				$modal = undefined;
 			}
-			/* make a copy */
+			// make a copy
 			config = $.extend({}, config);
 
-			/* Only for openTrigger, & filter... */
+			// Only for openTrigger, & filter...
 			var tempConfig = $.extend({}, self.defaults, self.readElementConfig($source[0]), config),
 				sharedPersist;
 
 			var handler = function(event) {
 				var $target = $(event.currentTarget);
-				/* ... since we might as well compute the config on the actual target */
+				// ... since we might as well compute the config on the actual target
 				var elementConfig = $.extend(
 					{$source: $source, $currentTarget: $target},
 					self.readElementConfig($source[0]),
@@ -482,11 +482,11 @@
 			var self = this;
 			if (self.autoBind){
 				var $autobound = $(self.autoBind);
-				/* Bind existing elements */
+				// Bind existing elements
 				$autobound.each(function(){
 					self.attach($(this));
 				});
-				/* If a click propagates to the document level, then we have an item that was added later on */
+				// If a click propagates to the document level, then we have an item that was added later on
 				$(document).on('click', self.autoBind, function(event) {
 					if (event.isDefaultPrevented()) {
 						return;
@@ -495,11 +495,11 @@
 					var len = $autobound.length;
 					$autobound = $autobound.add($cur);
 					if(len === $autobound.length) {
-						return; /* already bound */
+						return; // already bound
 					}
-					/* Bind featherlight */
+					// Bind featherlight
 					var data = self.attach($cur);
-					/* Dispatch event directly */
+					// Dispatch event directly
 					if (!data.filter || $(event.target).parentsUntil($cur, data.filter).length > 0) {
 						data.handler(event);
 					}
@@ -527,7 +527,7 @@
 
 			onResize: function(_super, event){
 				return _super(event);
-			}
+			},
 
 			beforeOpen: function(_super, event) {
 
@@ -556,6 +556,8 @@
 
 			afterClose: function(_super, event) {
 
+				var self = this;
+
 				// Restore focus
 				this._$previouslyTabbable.removeAttr('tabindex');
 				this._$previouslyWithTabIndex.each(function(i, element) {
@@ -573,12 +575,12 @@
 
 	$.featherlight = Featherlight;
 
-	/* bind jQuery elements to trigger featherlight */
+	// bind jQuery elements to trigger featherlight
 	$.fn.featherlight = function($modal, config) {
 		Featherlight.attach(this, $modal, config);
 		return this;
 	};
 
-	/* bind featherlight on ready if config autoBind is set */
+	// bind featherlight on ready if config autoBind is set
 	$(document).ready(function(){ Featherlight._onReady(); });
 }(jQuery));
