@@ -45,7 +45,7 @@
 	*/
 
 	function Featherlight($modal, config) {
-		if (this instanceof Featherlight) {  /* called with new */
+		if (this instanceof Featherlight) {  // called with new
 			this.id = Featherlight.id++;
 			this.setup($modal, config);
 			this.chainCallbacks(Featherlight._callbackChain);
@@ -64,7 +64,7 @@
 			return opened;
 		};
 
-	/* document wide key handler */
+	// document wide key handler
 	var toggleGlobalEvents = function(newState) {
 		if (Featherlight._globalHandlerInstalled !== newState) {
 			Featherlight._globalHandlerInstalled = newState;
@@ -89,6 +89,7 @@
 		/*** defaults ***/
 		// extend featherlight with defaults and methods
 		autoBind:       '[data-toggle="featherlight"]', // Will automatically bind elements matching this selector. Clear or set before onReady
+
 		targetAttr:     'data-target',         // Attribute of the triggered element that contains the selector to the modal
 		openTrigger:    'click',               // Event that triggers the lightbox
 		filter:         null,                  // Selector to filter events. Think $(...).on('click', filter, eventHandler)
@@ -106,7 +107,7 @@
 		onKeyUp:        $.noop,                // Called on key up for the frontmost featherlight
 		onResize:       $.noop,                // Called after new modal and when a window is resized
 		type:           null,                  // Specify type of lightbox. If unset, it will check for the data-type attribute value or try to identify from contentFilters.
-		closeIcon:      '&#x2716;',            // Close icon */
+		closeIcon:      '&#x2716;',            // Close icon
 		contentFilters: ['jquery', 'image', 'html', 'ajax', 'iframe', 'text'], /* List of content filters to use to determine the modal */
 		seamless:       null,                 // Enable or disable seamless mode.
 		width:          '',                    // Specify width of lightbox.
@@ -364,12 +365,12 @@
 			},
 
 			html: {
-				regex: /^\s*<[\w!][^<]*>/, // Anything that starts with some kind of valid tag
+				regex: /^\s*<[\w!][^<]*>/,  // Anything that starts with some kind of valid tag
 				process: function(html) { return $(html); }
 			},
 
 			ajax: {
-				regex: /./, // At this point, any content is assumed to be an URL
+				regex: /./,  // At this point, any content is assumed to be an URL
 				process: function(url)  {
 					var self = this,
 						deferred = $.Deferred();
@@ -413,8 +414,8 @@
 			var config = $(element).data(),
 				functionAttributes = ['beforeOpen', 'afterOpen', 'beforeContent', 'afterContent', 'beforeClose', 'afterClose'];
 
-			$.each(functionAttributes, function(i, event){
-				if (config[event] !== undefined) config[event] = new Function(config[event]);
+			$.each(functionAttributes, function(i, e){
+				if (config[e] !== undefined) config[e] = new Function(config[e]);
 			});
 
 			return config;
