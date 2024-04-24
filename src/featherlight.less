@@ -11,9 +11,8 @@
 @border-radius: 4px;
 
 body.featherlight-open {
-	/* prevent scrolling */
-	overflow: hidden;
-	padding-right: 15px;
+	overflow: hidden; /* prevent scrolling */
+	padding-inline-end: 15px;
 
 	> *:not(.featherlight):not(#animated-cart-item) {
 		filter: blur(@blur-size);
@@ -38,7 +37,7 @@ body.featherlight-open {
 		box-sizing: border-box;
 	}
 
-	/* support for nested featherlights. Does not work in IE8 (use JS to fix) */
+	/* support for nested featherlights. */
 	&.active {
 	}
 
@@ -58,7 +57,7 @@ body.featherlight-open {
 		position: relative;
 
 		/* position: centering vertical and horizontal */
-		text-align: left;
+		text-align: start;
 		vertical-align: middle;
 		display: inline-block;
 
